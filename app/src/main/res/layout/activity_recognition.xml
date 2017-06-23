@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/re"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+
+    android:background="#000000">
+
+    <SurfaceView
+        android:id="@+id/surfaceview_camera"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+
+    <ImageView
+        android:id="@+id/iv_camera_back"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/camera_back" />
+
+    <ImageView
+        android:id="@+id/iv_camera_flash"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <RelativeLayout
+        android:id="@+id/bg_template_listView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#000000"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/imbtn_takepic"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/capture_photo_button" />
+    </RelativeLayout>
+
+    <!-- <ImageButton
+        android:id="@+id/imbtn_takepic"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/take_pic_btn"/> -->
+
+    <TextView
+        android:id="@+id/tip"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="注：长时间未识别成功，请手动录入车辆"
+        android:textColor="#ff0000"
+        android:textSize="18dip" />
+
+</RelativeLayout>

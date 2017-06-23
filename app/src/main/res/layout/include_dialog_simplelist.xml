@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+    <EditText
+        android:id="@+id/serchcllx"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_5"
+        android:hint="查找"
+        android:textColorHint="@color/line_c"
+        android:paddingLeft="@dimen/dp_3"
+        android:background="@drawable/edittextshape"
+        android:visibility="gone"
+        />
+    <ListView
+        android:id="@+id/dialog_simplelist_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_dialog_simplelist"
+        android:cacheColorHint="#00000000"
+        android:divider="@color/dialog_divider"
+        android:dividerHeight="1.0dip"
+        android:fadingEdge="none"
+        android:listSelector="@drawable/list_selector_transition"
+        android:scrollingCache="false"/>
+
+</LinearLayout>

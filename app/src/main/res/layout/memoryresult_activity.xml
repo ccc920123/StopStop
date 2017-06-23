@@ -1,0 +1,115 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_22"
+            android:gravity="center"
+            android:text="基本信息"
+            android:layout_marginTop="@dimen/dp_24"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="↓"
+            />
+
+        <ImageView
+            android:id="@+id/plate_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_6"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_14" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_6"
+            android:layout_marginTop="@dimen/dp_14"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="号牌号码:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_22" />
+
+            <EditText
+                android:id="@+id/plate_number"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1.0"
+                android:background="@drawable/edittextshape"
+                android:gravity="center"
+                android:textSize="@dimen/sp_22" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_6"
+            android:layout_marginTop="@dimen/dp_14"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="号牌颜色:"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_22" />
+
+            <TextView
+                android:id="@+id/plate_color"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1.0"
+                android:background="@drawable/spinner_bg"
+                android:gravity="center"
+                android:hint="请选择"
+                android:paddingLeft="3dip"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_22" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_6"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_24"
+            android:background="@drawable/btn_blueshape"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_22"
+            android:text="确定" />
+    </LinearLayout>
+
+
+</LinearLayout>
