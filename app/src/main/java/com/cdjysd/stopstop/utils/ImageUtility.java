@@ -507,7 +507,7 @@ public class ImageUtility {
         String baseString = null;
         try {
             currentPhotoBAOS = new ByteArrayOutputStream();
-            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 80, currentPhotoBAOS)) {
+            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, currentPhotoBAOS)) {
                 // originBitmap.recycle();
                 currentPhotoBAOS.flush();
                 byte[] imageBytes = currentPhotoBAOS.toByteArray();

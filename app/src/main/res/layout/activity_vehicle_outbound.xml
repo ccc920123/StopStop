@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                tools:src="@mipmap/ic_launcher" />
+                tools:src="@drawable/notdata" />
 
             <TextView
                 android:id="@+id/show_notext"

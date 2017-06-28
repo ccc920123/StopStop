@@ -34,4 +34,10 @@ public class Comm {
         return inflater.inflate(res, parent, false);
 
     }
+    public static View inflate(Context context,int res){
+        if(inflater==null) {
+            inflater = LayoutInflater.from(context);
+        }
+        return inflater.inflate(res,null);
+    }
 }

@@ -2,6 +2,8 @@ package com.cdjysd.stopstop.bean;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * @类名: $classname$
  * @功能描述:
@@ -12,7 +14,7 @@ import org.litepal.crud.DataSupport;
  */
 
 
-public class InserCarBean extends DataSupport {
+public class InserCarBean extends DataSupport implements Serializable {
 
     private String carimage;
     private String hphm;

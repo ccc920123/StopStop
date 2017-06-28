@@ -173,7 +173,7 @@ public class MemoryResultActivity extends BaseActivity {
                             final InserCarBean bean = new InserCarBean();
                             bean.setHphm(hphm);
                             bean.setHpys(hpColor);
-                            bean.setInserttime(Date_U.getCurrentTime());
+                            bean.setInserttime(Date_U.getCurrentTime2());
                             if (bitmap != null) {
                                 Observable.just(bitmap).map(new Func1<Bitmap, String>() {
                                     @Override
@@ -184,19 +184,26 @@ public class MemoryResultActivity extends BaseActivity {
                                     @Override
                                     public void call(String str) {
                                         bean.setCarimage(str);
-
+                                        if (bean.save()) {
+                                            Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            ToastUtils.showToast(MemoryResultActivity.this, "保存失败，你的手机系统内存可能不足");
+                                        }
                                     }
                                 });
                             } else {
                                 bean.setCarimage("");
+                                if (bean.save()) {
+                                    Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    ToastUtils.showToast(MemoryResultActivity.this, "保存失败，你的手机系统内存可能不足");
+                                }
                             }
-                            if (bean.save()) {
-                                Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                ToastUtils.showToast(MemoryResultActivity.this, "保存失败，你的手机系统内存可能不足");
-                            }
+
 
 
                         }

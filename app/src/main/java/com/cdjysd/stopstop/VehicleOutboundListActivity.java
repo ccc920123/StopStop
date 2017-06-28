@@ -149,7 +149,13 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
     @Override
     public void onItemClick(View view, int postion, InserCarBean mdata) {
 
-        ToastUtils.showToast(this, "点击了");
+//        ToastUtils.showToast(this, "点击了");
+        Intent intent = new Intent(VehicleOutboundListActivity.this, DetailedActivity.class);
+        intent.putExtra("BEAN",mdata);
+        startActivity(intent);
+        finish();
+
+
 
 
     }

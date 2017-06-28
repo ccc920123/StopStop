@@ -30,7 +30,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -265,8 +264,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
             @Override
             public void onClick(View arg0) {
                 // TODO Auto-generated method stub
-                closeCamera();
-                finish();
+                onBackPressed();
             }
         });
         // 竖屏状态下返回按钮
@@ -275,8 +273,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
             @Override
             public void onClick(View arg0) {
                 // TODO Auto-generated method stub\
-                closeCamera();
-                finish();
+               onBackPressed();
             }
         });
         // 闪光灯监听事件
@@ -1053,14 +1050,14 @@ public class MemoryCameraActivity extends AppCompatActivity implements
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            closeCamera();
-            finish();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            closeCamera();
+//            finish();
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     public String savePicture(Bitmap bitmap) {
         String strCaptureFilePath = PATH + "plateID_" + pictureName() + ".jpg";
@@ -1260,5 +1257,16 @@ public class MemoryCameraActivity extends AppCompatActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        closeCamera();
+        Intent intent = new Intent(MemoryCameraActivity.this,
+                MainActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 }
