@@ -69,7 +69,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
     private Camera camera;
     private SurfaceView surfaceView;
     private static final String PATH = Environment
-            .getExternalStorageDirectory().toString() + "/DCIM/Camera/";
+            .getExternalStorageDirectory().toString() + "/STOPSTOP/Camera/";
     // private TextView resultEditText;
     private Button back_btn, flash_btn, back;
     private Button take_pic;//手动录入

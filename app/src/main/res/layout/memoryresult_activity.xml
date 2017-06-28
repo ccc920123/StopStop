@@ -23,13 +23,6 @@
             android:text="基本信息"
             android:layout_marginTop="@dimen/dp_24"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:text="↓"
-            />
 
         <ImageView
             android:id="@+id/plate_image"
@@ -108,7 +101,7 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_22"
-            android:text="确定" />
+            android:text="确定入库" />
     </LinearLayout>
 
 

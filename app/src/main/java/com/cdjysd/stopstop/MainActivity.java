@@ -16,14 +16,22 @@ import android.widget.TextView;
 
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.baseconoom.Comm;
+import com.cdjysd.stopstop.bean.InserCarBean;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
 import com.cdjysd.stopstop.widget.dialog.AlertDialog;
 import com.zhy.m.permission.MPermissions;
 import com.zhy.m.permission.PermissionDenied;
 import com.zhy.m.permission.PermissionGrant;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
 
 
 public class MainActivity extends BaseActivity
@@ -48,9 +56,33 @@ public class MainActivity extends BaseActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "提示统计数据", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(final View view) {
+
+
+                Observable observable = Observable.create(new Observable.OnSubscribe<Integer>() {
+                    @Override
+                    public void call(Subscriber<? super Integer> subscriber) {
+                        List<InserCarBean> carList=  DataSupport.findAll(InserCarBean.class);
+                        if (carList!=null && carList.size()>0) {
+                            subscriber.onNext(carList.size());
+                        }else{
+                            subscriber.onNext(0);
+                        }
+                        subscriber.onCompleted();
+                    }
+                });
+
+                observable.subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        Snackbar.make(view, "你的车场中共有【 "+ integer +" 】辆车", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+
+                });
+
+
+
             }
         });
 
@@ -155,6 +187,11 @@ public class MainActivity extends BaseActivity
             case R.id.car_delect_textview://车辆出库
 
 
+
+                Intent intent = new Intent(MainActivity.this, VehicleOutboundListActivity.class);
+                startActivity(intent);
+                finish();
+
                 break;
         }
     }
@@ -163,6 +200,7 @@ public class MainActivity extends BaseActivity
     public void requestCameraSucceed() {
         Intent intent = new Intent(MainActivity.this, MemoryCameraActivity.class);
         startActivity(intent);
+        finish();
 
     }
 

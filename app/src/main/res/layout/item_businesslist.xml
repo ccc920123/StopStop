@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp_10"
+    android:background="@drawable/textspinner_selector"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/dp_30">
+
+        <TextView
+            android:id="@+id/car_lsh_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Style_VehicleInfo_TextView"
+            android:text="号牌号码：" />
+
+        <TextView
+            android:id="@+id/car_hphm_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Style_VehicleInfo_TextView"
+            android:layout_toRightOf="@id/car_lsh_tv"
+            tools:text="1235465" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/dp_30">
+
+        <TextView
+            android:id="@+id/car_color_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Style_VehicleInfo_TextView"
+            android:text="号牌颜色：" />
+
+        <TextView
+            android:id="@+id/car_color_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Style_VehicleInfo_TextView"
+            android:layout_toRightOf="@id/car_color_tv"
+            tools:text="1235465" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="@dimen/dp_30">
+
+        <TextView
+            android:id="@+id/car_plate_type_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Style_VehicleInfo_TextView"
+            android:text="入库时间：" />
+
+        <TextView
+            android:id="@+id/car_time_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Style_VehicleInfo_TextView"
+            android:layout_toRightOf="@id/car_plate_type_tv"
+            tools:text="1235465" />
+    </RelativeLayout>
+</LinearLayout>

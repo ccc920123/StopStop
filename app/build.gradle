@@ -39,4 +39,8 @@ dependencies {
     compile project(':statusbarlibrary')
     apt 'com.zhy:mpermission-compiler:1.0.0'
     compile 'com.zhy:mpermission-api:1.0.0'
+
+    compile 'org.litepal.android:core:1.5.1'
+    compile 'io.reactivex:rxjava:1.0.14'
+    compile 'io.reactivex:rxandroid:1.0.1'
 }

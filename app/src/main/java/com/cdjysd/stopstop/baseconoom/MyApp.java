@@ -1,8 +1,11 @@
 package com.cdjysd.stopstop.baseconoom;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.zhy.http.okhttp.OkHttpUtils;
+
+import org.litepal.LitePal;
 
 import java.util.concurrent.TimeUnit;
 
@@ -43,8 +46,8 @@ public class MyApp extends Application {
         OkHttpUtils.initClient(okHttpClient);
 
 
-//        LitePal.initialize(getApplication());//初始化数据库
-//        SQLiteDatabase db = LitePal.getDatabase();//创建数据库/表
+        LitePal.initialize(this);//初始化数据库
+        SQLiteDatabase db = LitePal.getDatabase();//创建数据库/表
 
 
     }

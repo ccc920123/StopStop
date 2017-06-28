@@ -1,6 +1,10 @@
 package com.cdjysd.stopstop.baseconoom;
 
+import android.content.Context;
 import android.os.Environment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.io.File;
 
@@ -15,7 +19,7 @@ import java.io.File;
 
 
 public class Comm {
-
+    private static LayoutInflater inflater;
     public static final String PHONE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File
             .separator + "jysd" + File.separator;
     public static final String SAVEFOLDER = PHONE_PATH + "/Error";
@@ -23,5 +27,11 @@ public class Comm {
             + "/OCR/Camera/";
     public static final int PREMISSIONS_CAMERA = 1;
     public static final int WRITE_EXTERNAL_STORAGE = 2;//写的权限
+    public static View inflate(Context context, ViewGroup parent, int res) {
+        if (inflater == null) {
+            inflater = LayoutInflater.from(context);
+        }
+        return inflater.inflate(res, parent, false);
 
+    }
 }
