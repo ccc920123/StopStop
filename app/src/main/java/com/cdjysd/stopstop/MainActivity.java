@@ -172,11 +172,14 @@ public class MainActivity extends BaseActivity
 
         if (id == R.id.nav_evaluation) {//评价
             AppUtils.goMarket(MainActivity.this);
-
         } else if (id == R.id.nav_slideshow) {//关于我们
-
+            Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_manage) {//计时设置
-
+            Intent intent = new Intent(MainActivity.this, SetingActivity.class);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_share) {//分享
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain"); //纯文本

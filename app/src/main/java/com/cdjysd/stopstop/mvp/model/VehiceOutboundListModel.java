@@ -58,4 +58,40 @@ public class VehiceOutboundListModel implements VehiceOutboundListModelImp {
 
 
     }
+
+    @Override
+    public void getCollectionData(final MVPCallBack<List<InserCarBean>> callBack) {
+
+        Observable observable = Observable.create(new Observable.OnSubscribe<List<InserCarBean>>() {
+
+            @Override
+            public void call(Subscriber<? super List<InserCarBean>> subscriber) {
+                List<InserCarBean> carData = DataSupport.limit(5).find(InserCarBean.class);
+
+                subscriber.onNext(carData);
+
+                subscriber.onCompleted();
+            }
+        });
+        observable.subscribe(new Action1<List<InserCarBean>>() {
+            @Override
+            public void call(List<InserCarBean> inserCarBeen) {
+
+                if(inserCarBeen!=null && inserCarBeen.size()>0) {
+                    callBack.succeed(inserCarBeen);
+
+                }else{
+                    callBack.failed("未查询到数据");
+                }
+
+
+            }
+
+
+        });
+
+
+
+
+    }
 }

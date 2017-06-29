@@ -73,6 +73,9 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
     @Override
     protected void initEventAndData() {
 
+        //查询数据库只查询前5条数据
+
+        ((VehiceOutboundListPresenter) mPresenter).selectDBCollection();
     }
 
     @Override

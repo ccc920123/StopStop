@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_seting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_16"
+        android:gravity="center"
+        android:text="停车场地址："
+        android:textSize="@dimen/sp_18" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_6"
+        android:layout_marginRight="@dimen/dp_6"
+        android:background="@drawable/edittextshape"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/adderss_text"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:layout_weight="1.0"
+            android:background="@null"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/adess_onclick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/adess_selector"
+            android:layout_marginRight="@dimen/dp_3"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:gravity="center"
+        android:text="收费方式："
+        android:textSize="@dimen/sp_18" />
+
+    <RadioGroup
+        android:id="@+id/way_radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radio_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="按小时计算"
+            android:checked="true"
+            android:tag="0"
+            android:textColor="@color/actionsheet_blue" />
+
+        <RadioButton
+            android:id="@+id/radio_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="按次数计算"
+            android:tag="1"
+            android:textColor="@color/actionsheet_blue" />
+
+        <RadioButton
+            android:id="@+id/radio_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="按天数计算"
+            android:tag="2"
+            android:textColor="@color/actionsheet_blue" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_6"
+        android:layout_marginRight="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_8"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="车位：" />
+
+        <EditText
+            android:id="@+id/seat_text"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:layout_weight="1.0"
+            android:maxLength="5"
+            android:digits="1234567890"
+            android:inputType="phone"
+            android:background="@drawable/edittextshape"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_8"
+            android:text="个" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:text="价格：" />
+
+        <EditText
+            android:id="@+id/press_text"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:layout_weight="1.0"
+            android:maxLength="4"
+            android:digits="1234567890."
+            android:inputType="number"
+            android:background="@drawable/edittextshape"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/set_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小时" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/sava_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/dp_6"
+        android:layout_marginRight="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_24"
+        android:background="@drawable/btn_blueshape"
+        android:gravity="center"
+        android:text="保  存"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_22" />
+
+
+</LinearLayout>

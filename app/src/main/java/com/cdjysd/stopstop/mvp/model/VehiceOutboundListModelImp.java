@@ -19,4 +19,6 @@ public interface VehiceOutboundListModelImp extends BaseModel {
 
     public void getData(String hphm, MVPCallBack<List<InserCarBean>> callBack);
 
+    public  void  getCollectionData(MVPCallBack<List<InserCarBean>> callBack);
+
 }

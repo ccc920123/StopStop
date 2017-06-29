@@ -24,13 +24,13 @@ public class VehiceOutboundListPresenter extends BasePresenter<VehiceOutboundLis
 
     public void selectDBDate(String hphm) {
 
-        mView.showLoadProgressDialog("正在查询数据，请稍等...");
+        mView.showLoadProgressDialog("正在查询数据...");
 
         model.getData(hphm, new MVPCallBack<List<InserCarBean>>() {
             @Override
             public void succeed(List<InserCarBean> bean) {
                 mView.disDialog();
-                mView.showNOData(false,"");
+                mView.showNOData(false, "");
                 mView.setAdapter(bean);
 
 
@@ -46,5 +46,24 @@ public class VehiceOutboundListPresenter extends BasePresenter<VehiceOutboundLis
 
     }
 
+
+    public void selectDBCollection() {
+        mView.showLoadProgressDialog("正在查询数据...");
+        model.getCollectionData(new MVPCallBack<List<InserCarBean>>() {
+            @Override
+            public void succeed(List<InserCarBean> bean) {
+                mView.disDialog();
+                mView.showNOData(false, "");
+                mView.setAdapter(bean);
+            }
+
+            @Override
+            public void failed(String message) {
+                mView.disDialog();
+            }
+        });
+
+
+    }
 
 }
