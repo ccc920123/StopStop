@@ -128,7 +128,7 @@ public class SharedPreferencesHelper {
      * @param defValue 默认值
      * @return
      */
-    public static float getFloat(Context context, String key, Float defValue) {
+    public static float getFloat(Context context, String key,float defValue) {
         SharedPreferences sharedPreference = getSharedPreference(context);
         return sharedPreference.getFloat(key, defValue);
     }

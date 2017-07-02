@@ -17,6 +17,8 @@ import com.cdjysd.stopstop.mvp.view.BaseView;
 import com.cdjysd.stopstop.utils.StatusBarUtil;
 import com.cdjysd.stopstop.widget.dialog.LoadProgressDialog;
 
+import java.lang.reflect.Field;
+
 import butterknife.ButterKnife;
 import me.naturs.library.statusbar.StatusBarHelper;
 
@@ -135,7 +137,7 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
         super.onDestroy();
     }
 
-    private void initToolBarConfig() {
+    public void initToolBarConfig() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0及以上
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
@@ -145,6 +147,7 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
             WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
             localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
+
     }
 
     public void showLoading(String string) {
@@ -163,6 +166,17 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
     public void onBackPressed() {
         super.onBackPressed();
     }
-
+    public static int getStatusBarHeight(Context context) {
+        try {
+            Class<?> c = Class.forName("com.android.internal.R$dimen");
+            Object obj = c.newInstance();
+            Field field = c.getField("status_bar_height");
+            int x = Integer.parseInt(field.get(obj).toString());
+            return context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 }

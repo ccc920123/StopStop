@@ -63,6 +63,12 @@ public class MainActivity extends BaseActivity
     @Override
     protected void initInjector() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT)
+//        {
+//
+//        }
+
+
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -200,7 +206,8 @@ public class MainActivity extends BaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.car_insert_textview://车辆入库
-                MPermissions.requestPermissions(this, Comm.PREMISSIONS_CAMERA, Manifest.permission.CAMERA);
+                MPermissions.requestPermissions(this, Comm.PREMISSIONS_CAMERA, Manifest.permission.CAMERA, Manifest.permission
+                        .WRITE_EXTERNAL_STORAGE);
 
                 break;
             case R.id.car_delect_textview://车辆出库

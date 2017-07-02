@@ -27,6 +27,8 @@ public class Comm {
             + "/OCR/Camera/";
     public static final int PREMISSIONS_CAMERA = 1;
     public static final int WRITE_EXTERNAL_STORAGE = 2;//写的权限
+    public static final  int GPS=3;
+    public static  final int READ_PHONE_STATE=4;
     public static View inflate(Context context, ViewGroup parent, int res) {
         if (inflater == null) {
             inflater = LayoutInflater.from(context);
