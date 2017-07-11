@@ -17,9 +17,9 @@
 单发送，当车主需要本次清单时，车场工作人员可以在车辆出库时输入车主的手机号码，确定出库后停车详细信息将通过短信方式发送到车主手
 机中，该短信由系统下发不产生任何费用。《停停》是一个让你更省心的停车计时器。</string>
     <array name="setradio">
-        <item>小时</item>
-        <item>次</item>
-        <item>天</item>
+        <item>元/小时</item>
+        <item>元/次</item>
+        <item>元/天</item>
     </array>
 
 

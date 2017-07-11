@@ -23,11 +23,17 @@ public class SetBean {
     private String way;//收费方式
     private int carnumber;//车位
     private float money;//价格
+    private String IMIE;
 
 
     private Context context;
 
-    public SetBean(Context context, String name, String adesstr, String log, String lag, String way, int carnumber, float money) {
+    public SetBean(Context context) {
+        super();
+        this.context = context;
+    }
+
+    public SetBean(Context context, String name, String adesstr, String log, String lag, String way, int carnumber, float money,String IMIE) {
         this.context = context;
         this.name = name;
         this.adesstr = adesstr;
@@ -36,6 +42,15 @@ public class SetBean {
         this.way = way;
         this.carnumber = carnumber;
         this.money = money;
+        this.IMIE=IMIE;
+    }
+
+    public String getIMIE() {
+        return IMIE;
+    }
+
+    public void setIMIE(String IMIE) {
+        this.IMIE = IMIE;
     }
 
     public String getName() {
@@ -79,7 +94,7 @@ public class SetBean {
     }
 
     public String getWay() {
-        way=SharedPreferencesHelper.getString(context,"way","");
+        way=SharedPreferencesHelper.getString(context,"way","0");
         return way;
     }
 

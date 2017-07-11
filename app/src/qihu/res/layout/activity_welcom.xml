@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_welcom"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <com.cdjysd.stopstop.widget.RotateTextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0"
+            android:gravity="right|top"
+            android:layout_marginTop="100dp"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginBottom="100dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textColor="@color/red"
+            android:textSize="@dimen/sp_16"
+            android:background="@drawable/welcom_logo"
+             />
+        <!-- 广点通开屏广告支持“半屏/全屏”展示，开发者可以把Logo区域放在屏幕底部，然后在Logo上方提供一个容器来放置半开屏广告，请注意此容器高度不得小于400dp -->
+
+        <!-- 1.Logo区域：展示半开屏广告时使用，如果想展示全开屏广告，可以不需要这个Logo区域 -->
+        <ImageView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:src="@drawable/qihuone"
+            />
+        <LinearLayout
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            >
+        <ImageView
+
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/welcom_com" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1.0"
+                android:text="停车计时器"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_32"
+                />
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</FrameLayout>

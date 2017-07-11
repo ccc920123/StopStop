@@ -19,6 +19,11 @@ import java.io.File;
 
 
 public class Comm {
+
+
+    public static final String APPID = "1101152570";
+    public static final String SplashPosID = "8863364436303842593";
+
     private static LayoutInflater inflater;
     public static final String PHONE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File
             .separator + "jysd" + File.separator;
@@ -29,6 +34,8 @@ public class Comm {
     public static final int WRITE_EXTERNAL_STORAGE = 2;//写的权限
     public static final  int GPS=3;
     public static  final int READ_PHONE_STATE=4;
+    public static  final  int SEND_SMS=5;//短信权限
+
     public static View inflate(Context context, ViewGroup parent, int res) {
         if (inflater == null) {
             inflater = LayoutInflater.from(context);

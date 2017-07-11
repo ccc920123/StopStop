@@ -111,6 +111,7 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -131,8 +132,10 @@ public class MainActivity extends BaseActivity
                     @Override
                     public void onClick(View v) {
 
-                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
                         startActivity(intent);
+                        finish();
 
                     }
                 }).show();
@@ -236,6 +239,10 @@ public class MainActivity extends BaseActivity
                 .setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
+                        startActivity(intent);
                         finish();
                     }
                 }).show();

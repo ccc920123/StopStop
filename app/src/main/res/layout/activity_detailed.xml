@@ -170,37 +170,44 @@
             android:textSize="@dimen/sp_22" />
     </LinearLayout>
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_6"
         android:layout_marginRight="@dimen/dp_6"
         android:layout_marginTop="@dimen/dp_6"
-        android:text="车主手机:"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sp_22" />
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="车主手机:"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_22" />
+
+        <EditText
+            android:id="@+id/telphone_number"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_6"
+            android:background="@drawable/edittextshape"
+            android:digits="0123456789"
+            android:gravity="center"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textSize="@dimen/sp_22" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/dp_6"
-        android:text="如果车主需要本次停车的详细清单，可在输入框中输入车主的手机号码，本次清单将通过短信的方式发送到车主手机。*短信系统免费发送，不收取您的任何费用"
+        android:text="如果车主需要本次停车的详细清单，可在输入框中输入车主的手机号码，本次清单将通过短信的方式发送到车主手机.*必须保证你手机有可以用的SIM卡*"
         android:textColor="@color/alpha_35_black"
         android:textSize="@dimen/sp_12" />
 
-    <EditText
-        android:id="@+id/telphone_number"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
-        android:layout_marginLeft="@dimen/dp_6"
-        android:layout_marginRight="@dimen/dp_6"
-        android:background="@drawable/edittextshape"
-        android:gravity="center"
-        android:maxLength="11"
-        android:digits="0123456789"
-        android:inputType="phone"
-        android:textSize="@dimen/sp_22" />
 
     <Button
         android:id="@+id/delect_confirm"
@@ -209,7 +216,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/dp_6"
         android:layout_marginRight="@dimen/dp_6"
-        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_14"
         android:background="@drawable/btn_blueshape"
         android:gravity="center"
         android:text="确定出库"

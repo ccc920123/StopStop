@@ -2,9 +2,11 @@ package com.cdjysd.stopstop;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +21,9 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.baseconoom.Comm;
+import com.cdjysd.stopstop.bean.SetBean;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
+import com.cdjysd.stopstop.utils.ToastUtils;
 import com.cdjysd.stopstop.widget.dialog.AlertDialog;
 import com.zhy.m.permission.MPermissions;
 import com.zhy.m.permission.PermissionDenied;
@@ -67,12 +71,15 @@ public class SetingActivity extends BaseActivity {
 
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-
-            adderssText.setText(msg.obj.toString());
-            adderssText.setEnabled(true);
+            dissLoadDialog();//关闭等待框
+            if (msg.obj.toString() != null) {
+                adderssText.setText(msg.obj.toString());
+                adderssText.setEnabled(true);
+            }
             super.handleMessage(msg);
         }
     };
+    private String PDA_IMEI;
 
     @Override
     protected int getLayoutId() {
@@ -88,6 +95,36 @@ public class SetingActivity extends BaseActivity {
         initLocation();
         titleTv.setText("车场设置");
         setString = this.getResources().getStringArray(R.array.setradio);
+        TelephonyManager TelephonyMgr = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+        if (TelephonyMgr.getDeviceId() != null) {
+            PDA_IMEI = TelephonyMgr.getDeviceId();
+        } else {
+            PDA_IMEI = Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        }
+        SetBean set = new SetBean(this);
+        if (!"".equals(set.getAdesstr())) {
+            adderssText.setText(set.getAdesstr());
+            seatText.setText(String.valueOf(set.getCarnumber()));
+            pressText.setText(String.valueOf(set.getMoney()));
+            switch (set.getWay()) {
+                case "0":
+                    radioHours.setChecked(true);
+                    break;
+                case "1":
+                    radioNumber.setChecked(true);
+                    break;
+                case "2":
+                    radioDays.setChecked(true);
+                    break;
+                default:
+                    radioHours.setChecked(true);
+                    break;
+
+
+            }
+
+
+        }
     }
 
     @Override
@@ -175,6 +212,23 @@ public class SetingActivity extends BaseActivity {
 
                 break;
             case R.id.sava_button://保存数据，先将数据上传到服务器，在保存到共享内存
+                //判断数据是否为空
+                if ("".equals(adderssText.getText().toString().trim()) ||
+                        "".equals(seatText.getText().toString().trim()) ||
+                        "".equals(pressText.getText().toString().trim())) {
+                    ToastUtils.showToast(SetingActivity.this, "请填写完相应的数据");
+                } else {
+                    SetBean msetBean = new SetBean(SetingActivity.this);
+                    msetBean.setAdesstr(adderssText.getText().toString());
+                    msetBean.setLag(Latitude);
+                    msetBean.setLog(Longitude);
+                    msetBean.setCarnumber(Integer.parseInt(seatText.getText().toString()));
+                    msetBean.setMoney(Integer.parseInt(pressText.getText().toString()));
+                    msetBean.setWay(String.valueOf(radTag));
+                    msetBean.setIMIE(PDA_IMEI);
+                    onBackPressed();
+                }
+
 
                 break;
         }
@@ -182,7 +236,7 @@ public class SetingActivity extends BaseActivity {
 
     @PermissionGrant(Comm.GPS)
     public void requestSdcardSuccess() {
-
+        showLoading("定位中");
         //定位
         mLocationClient.start();
 
@@ -195,7 +249,8 @@ public class SetingActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
 
-                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
                         startActivity(intent);
 
                     }
@@ -205,6 +260,7 @@ public class SetingActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        mLocationClient.stop();
         Intent intent = new Intent(SetingActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
