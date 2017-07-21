@@ -21,8 +21,8 @@ import java.io.File;
 public class Comm {
 
 
-    public static final String APPID = "1101152570";
-    public static final String SplashPosID = "8863364436303842593";
+    public static final String APPID = "1106270600";
+    public static final String SplashPosID = "2010923400765349";
 
     private static LayoutInflater inflater;
     public static final String PHONE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File
