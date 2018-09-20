@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ public class AboutUsActivity extends BaseActivity {
     }
 
     @Override
-    protected void initEventAndData() {
+    protected void initEventAndData(Bundle savedInstanceState) {
         version.setText("版本号：V" + getAppVersionName(this));
     }
 

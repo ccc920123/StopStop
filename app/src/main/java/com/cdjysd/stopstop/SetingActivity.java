@@ -1,12 +1,15 @@
 package com.cdjysd.stopstop;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,10 +18,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.baseconoom.Comm;
 import com.cdjysd.stopstop.bean.SetBean;
@@ -29,10 +32,13 @@ import com.zhy.m.permission.MPermissions;
 import com.zhy.m.permission.PermissionDenied;
 import com.zhy.m.permission.PermissionGrant;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 
-public class SetingActivity extends BaseActivity {
+public class SetingActivity extends BaseActivity implements AMapLocationListener {
 
 
     @Bind(R.id.title_back)
@@ -61,9 +67,11 @@ public class SetingActivity extends BaseActivity {
     Button savaButton;
     private String[] setString;
     private int radTag = 0;
-    public LocationClient mLocationClient = null;
-    public BDLocationListener myListener = new MyLocationListener();
 
+    //声明mlocationClient对象
+    public AMapLocationClient mlocationClient;
+    //声明mLocationOption对象
+    public AMapLocationClientOption mLocationOption = null;
 
     private String Latitude;//纬度
     private String Longitude;//经度
@@ -88,9 +96,9 @@ public class SetingActivity extends BaseActivity {
 
     @Override
     protected void initInjector() {
-        mLocationClient = new LocationClient(getApplicationContext());
-        //声明LocationClient类
-        mLocationClient.registerLocationListener(myListener);
+        mlocationClient = new AMapLocationClient(this);
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
         //注册监听函数
         initLocation();
         titleTv.setText("车场设置");
@@ -128,7 +136,7 @@ public class SetingActivity extends BaseActivity {
     }
 
     @Override
-    protected void initEventAndData() {
+    protected void initEventAndData(Bundle savedInstanceState) {
         wayRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -156,42 +164,23 @@ public class SetingActivity extends BaseActivity {
     }
 
     private void initLocation() {
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
 
-        option.setCoorType("bd09ll");
-        //可选，默认gcj02，设置返回的定位结果坐标系
+        //初始化定位参数
+        mLocationOption = new AMapLocationClientOption();
+//设置定位监听
+        mlocationClient.setLocationListener(this);
+//设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+//设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+//设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+// 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+// 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+// 在定位结束后，在合适的生命周期调用onDestroy()方法
+// 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+//启动定位
 
-        int span = 1000;
-        option.setScanSpan(span);
-        //可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-
-        option.setIsNeedAddress(true);
-        //可选，设置是否需要地址信息，默认不需要
-
-        option.setOpenGps(true);
-        //可选，默认false,设置是否使用gps
-
-        option.setLocationNotify(true);
-        //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
-
-        option.setIsNeedLocationDescribe(true);
-        //可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-
-        option.setIsNeedLocationPoiList(true);
-        //可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-
-        option.setIgnoreKillProcess(false);
-        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-
-        option.SetIgnoreCacheException(false);
-        //可选，默认false，设置是否收集CRASH信息，默认收集
-
-        option.setEnableSimulateGps(false);
-        //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
-
-        mLocationClient.setLocOption(option);
     }
 
     @Override
@@ -208,7 +197,7 @@ public class SetingActivity extends BaseActivity {
                 break;
             case R.id.adess_onclick://地图搜索地址
                 MPermissions.requestPermissions(this, Comm.GPS, Manifest.permission
-                        .ACCESS_COARSE_LOCATION);
+                        .ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION);
 
                 break;
             case R.id.sava_button://保存数据，先将数据上传到服务器，在保存到共享内存
@@ -223,7 +212,7 @@ public class SetingActivity extends BaseActivity {
                     msetBean.setLag(Latitude);
                     msetBean.setLog(Longitude);
                     msetBean.setCarnumber(Integer.parseInt(seatText.getText().toString()));
-                    msetBean.setMoney(Integer.parseInt(pressText.getText().toString()));
+                    msetBean.setMoney(Float.parseFloat(pressText.getText().toString()));
                     msetBean.setWay(String.valueOf(radTag));
                     msetBean.setIMIE(PDA_IMEI);
                     onBackPressed();
@@ -238,7 +227,7 @@ public class SetingActivity extends BaseActivity {
     public void requestSdcardSuccess() {
         showLoading("定位中");
         //定位
-        mLocationClient.start();
+        mlocationClient.startLocation();
 
     }
 
@@ -260,47 +249,37 @@ public class SetingActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mLocationClient.stop();
+        mlocationClient.stopLocation();
         Intent intent = new Intent(SetingActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
 
     }
 
-    public class MyLocationListener implements BDLocationListener {
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-
-            Message message = new Message();
-            Latitude = String.valueOf(location.getLatitude());    //获取纬度信息
-
-            Longitude = String.valueOf(location.getLongitude());    //获取经度信息
-
-
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {
-
-
-                AddrStr = location.getAddrStr();    //获取地址信息
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                Message message = new Message();
+                //定位成功回调信息，设置相关消息
+                amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                Latitude = String.valueOf(amapLocation.getLatitude());//获取纬度
+                Longitude = String.valueOf(amapLocation.getLongitude());//获取经度
+                AddrStr = amapLocation.getAddress();
                 message.obj = AddrStr;
                 handler.sendMessage(message);
 
-
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-
-
-                AddrStr = location.getAddrStr();    //获取地址信息
-                message.obj = AddrStr;
-                handler.sendMessage(message);
-
-
+//                amapLocation.getAccuracy();//获取精度信息
+//                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Date date = new Date(amapLocation.getTime());
+//                df.format(date);//定位时间
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError", "location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
             }
-
-        }
-
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
-
         }
     }
+
 }

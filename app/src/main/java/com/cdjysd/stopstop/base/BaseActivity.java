@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.cdjysd.stopstop.MainMapActivity;
 import com.cdjysd.stopstop.R;
 import com.cdjysd.stopstop.baseconoom.AppManager;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
 import com.cdjysd.stopstop.mvp.view.BaseView;
+import com.cdjysd.stopstop.utils.MyDisplayCutout;
 import com.cdjysd.stopstop.utils.StatusBarUtil;
 import com.cdjysd.stopstop.widget.dialog.LoadProgressDialog;
 
@@ -21,7 +23,6 @@ import java.lang.reflect.Field;
 
 import butterknife.ButterKnife;
 import me.naturs.library.statusbar.StatusBarHelper;
-
 
 
 public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends AppCompatActivity implements IBase {
@@ -40,14 +41,24 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setBaseConfig();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题栏
+        if (MyDisplayCutout.hasNotchInOppo(this)
+                || MyDisplayCutout.hasNotchInScreen(this)
+                || MyDisplayCutout.hasNotchInScreenAtVoio(this)
+                || MyDisplayCutout.hasNotchinScreenXiaoMi(this)) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//显示状态栏
+        } else {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
+        }
+        AppManager.getAppManager().addActivity(this);
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-        onTintStatusBar();
+        if (!(this instanceof MainMapActivity)) {
+            onTintStatusBar();
+        }
         initInjector();
         onSaveState(savedInstanceState);
         mPresenter = getPresenter();
@@ -55,7 +66,7 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
             mPresenter.attach((BaseView) this);
         }
         //注册一个监听连接状态的listener
-        initEventAndData();
+        initEventAndData(savedInstanceState);
 //        if (!EventBus.getDefault().isRegistered(this)) {
 //            EventBus.getDefault().register(BaseActivity.this);
 //        }
@@ -64,14 +75,6 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
     public void onSaveState(Bundle savedInstanceState) {
     }
 
-
-    public void setBaseConfig() {
-        initTheme();
-        AppManager.getAppManager().addActivity(this);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //  SetStatusBarColor();
-    }
 
     public void onTintStatusBar() {
         if (mStatusBarHelper == null) {
@@ -96,31 +99,7 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
     /**
      * 设置监听
      */
-    protected abstract void initEventAndData();
-
-    private void initTheme() {
-    }
-
-    /**
-     * 着色状态栏（4.4以上系统有效）
-     */
-    protected void SetStatusBarColor() {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.black));
-    }
-
-    /**
-     * 着色状态栏（4.4以上系统有效）
-     */
-    public void SetStatusBarColor(int color) {
-        StatusBarUtil.setStatusBarColor(this, color);
-    }
-
-    /**
-     * 沉浸状态栏（4.4以上系统有效）
-     */
-    protected void SetTranslanteBar() {
-        StatusBarUtil.translucentStatusBar(this, false);
-    }
+    protected abstract void initEventAndData(Bundle savedInstanceState);
 
 
     @Override
@@ -132,7 +111,7 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
         }
         //mRxManager.clear();
         ButterKnife.unbind(this);
-         AppManager.getAppManager().finishActivity(this);
+        AppManager.getAppManager().finishActivity(this);
 
         super.onDestroy();
     }
@@ -166,6 +145,7 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
     public void onBackPressed() {
         super.onBackPressed();
     }
+
     public static int getStatusBarHeight(Context context) {
         try {
             Class<?> c = Class.forName("com.android.internal.R$dimen");

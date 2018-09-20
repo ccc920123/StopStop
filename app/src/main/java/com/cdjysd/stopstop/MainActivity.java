@@ -3,6 +3,7 @@ package com.cdjysd.stopstop;
 import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -115,7 +116,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    protected void initEventAndData() {
+    protected void initEventAndData(Bundle savedInstanceState) {
         MPermissions.requestPermissions(this, Comm.WRITE_EXTERNAL_STORAGE, Manifest.permission
                 .WRITE_EXTERNAL_STORAGE);
     }

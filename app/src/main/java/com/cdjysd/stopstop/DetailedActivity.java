@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
@@ -93,7 +94,7 @@ public class DetailedActivity extends BaseActivity {
 
 
     @Override
-    protected void initEventAndData() {
+    protected void initEventAndData(Bundle savedInstanceState) {
 
         if (carBean.getCarimage() != null && !"".equals(carBean.getCarimage())) {
 

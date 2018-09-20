@@ -3,6 +3,7 @@ package com.cdjysd.stopstop;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,7 +69,7 @@ public class MemoryResultActivity extends BaseActivity {
     }
 
     @Override
-    protected void initEventAndData() {
+    protected void initEventAndData(Bundle savedInstanceState) {
 
     }
 

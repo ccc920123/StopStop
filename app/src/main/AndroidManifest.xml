@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cdjysd.stopstop">
+    package="com.cdjysd.stopstop"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -9,28 +11,22 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--SIM-->
+    <!-- SIM -->
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <!-- 往SDCard写入数据权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <!-- 关闭该包下的所有应用程序 -->
-    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
-    <!-- 获取机型信息权限 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 访问internet权限 -->
+    <!-- 允许程序打开网络套接字 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 这个权限用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 这个权限用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <!-- 允许程序设置内置sd卡的写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 允许程序获取网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 允许程序访问WiFi网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 允许程序读写手机状态和身份 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".baseconoom.MyApp"
@@ -39,6 +35,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!-- targetSDKVersion >= 24时才需要添加这个provider。provider的authorities属性的值为${applicationId}.fileprovider，请开发者根据自己的${applicationId}来设置这个值 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -59,11 +56,7 @@
             android:name=".WelcomActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.qq.e.ads.ADActivity"
@@ -71,7 +64,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MemoryCameraActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|navigation"
@@ -101,22 +94,32 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!-- 百度 -->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote"></service>
-
+        <!-- 高德 -->
         <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="imUjIwAudQ7bXMNiic8hulrrohaPiWi2" />
-        <!--gdt-->
+            android:name="com.amap.api.v2.apikey"
+            android:value="ef30a0e5eb39a688a2355ea62f172fed" />
+
+        <!-- gdt -->
         <service
             android:name="com.qq.e.comm.DownloadService"
             android:exported="false" />
+
         <activity
             android:name="com.qq.e.ads.ADActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".MainMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+        </activity>
     </application>
 
 </manifest>

@@ -45,10 +45,11 @@
         <EditText
             android:id="@+id/adderss_text"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_40"
+            android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:background="@null"
             android:enabled="false"
+
             android:gravity="center" />
 
         <TextView

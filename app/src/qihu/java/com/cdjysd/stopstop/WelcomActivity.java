@@ -102,18 +102,18 @@ public class WelcomActivity extends AppCompatActivity implements SplashADListene
     @TargetApi(Build.VERSION_CODES.M)
     private void checkAndRequestPermission() {
         List<String> lackedPermission = new ArrayList<String>();
-        if (!(checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)) {
-            lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
-        }
+
 
         if (!(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
             lackedPermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
 
-        if (!(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-            lackedPermission.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        if (!(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+            lackedPermission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
-
+        if (!(checkSelfPermission(Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)) {
+            lackedPermission.add(Manifest.permission.READ_PHONE_STATE);
+        }
         // 权限都已经有了，那么直接调用SDK
         if (lackedPermission.size() == 0) {
             fetchSplashAD(this, container, skipView, Comm.APPID, Comm.SplashPosID, this, 0);
