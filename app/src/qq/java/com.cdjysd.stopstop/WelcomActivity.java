@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.cdjysd.stopstop.baseconoom.Comm;
 import com.cdjysd.stopstop.bean.SetBean;
+import com.cdjysd.stopstop.utils.SharedPreferencesHelper;
 import com.cdjysd.stopstop.widget.RotateTextView;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
@@ -75,15 +76,20 @@ public class WelcomActivity extends AppCompatActivity implements SplashADListene
      * 跳转到登陆界面
      */
     private void jump() {
-        SetBean bean = new SetBean(this);
-        if ("".equals(bean.getAdesstr())) {
-            Intent intent = new Intent(WelcomActivity.this, SetingActivity.class);
+        if ("".equals(SharedPreferencesHelper.getString(this, "PHONE", ""))) {
+            Intent intent = new Intent(WelcomActivity.this, LoginActivity.class);
             startActivity(intent);
         } else {
+            SetBean bean = new SetBean(this);
+            if ("".equals(bean.getAdesstr())) {
+                Intent intent = new Intent(WelcomActivity.this, SetingActivity.class);
+                startActivity(intent);
+            } else {
 
 
-            Intent intent = new Intent(WelcomActivity.this, MainActivity.class);
-            startActivity(intent);
+                Intent intent = new Intent(WelcomActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
         }
 
         finish();

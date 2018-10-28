@@ -38,7 +38,7 @@ import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
@@ -49,9 +49,9 @@ import rx.functions.Action1;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @Bind(R.id.car_insert_textview)
+    @BindView(R.id.car_insert_textview)
     TextView carInsertTextview;
-    @Bind(R.id.car_delect_textview)
+    @BindView(R.id.car_delect_textview)
     TextView carDelectTextview;
     private AlertDialog alertDialog;
 

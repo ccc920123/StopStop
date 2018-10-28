@@ -20,8 +20,12 @@
     </style>
 
 
-
-
+    <style name="login_text_gray">
+        <item name="android:textColor">@drawable/text_gray</item>
+    </style>
+    <style name="login_text_blue">
+        <item name="android:textColor">@drawable/text_blue</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

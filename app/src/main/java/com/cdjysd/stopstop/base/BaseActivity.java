@@ -1,6 +1,7 @@
 package com.cdjysd.stopstop.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,13 +23,11 @@ import com.cdjysd.stopstop.widget.dialog.LoadProgressDialog;
 import java.lang.reflect.Field;
 
 import butterknife.ButterKnife;
-import me.naturs.library.statusbar.StatusBarHelper;
 
 
 public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends AppCompatActivity implements IBase {
     public BasePresenter mPresenter;
     // public RxManager mRxManager;
-    protected StatusBarHelper mStatusBarHelper;
     public Context mContext;
     //判断是否为登录界面或者欢迎界面
     /**
@@ -56,9 +55,9 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        if (!(this instanceof MainMapActivity)) {
-            onTintStatusBar();
-        }
+//        if (!(this instanceof MainMapActivity)) {
+//            onTintStatusBar();
+//        }
         initInjector();
         onSaveState(savedInstanceState);
         mPresenter = getPresenter();
@@ -71,18 +70,20 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
 //            EventBus.getDefault().register(BaseActivity.this);
 //        }
     }
+    public synchronized void jumpTo(Class<?> target, Bundle bundle, boolean backToMe) {
 
+        Intent intent = new Intent();
+        if (bundle != null) {
+            intent.putExtra("BUNDLE", bundle);
+        }
+        intent.setClass(this, target);
+        startActivity(intent);
+        finish();
+    }
     public void onSaveState(Bundle savedInstanceState) {
     }
 
 
-    public void onTintStatusBar() {
-        if (mStatusBarHelper == null) {
-            mStatusBarHelper = new StatusBarHelper(this, StatusBarHelper.LEVEL_19_TRANSLUCENT, StatusBarHelper
-                    .LEVEL_21_VIEW);
-        }
-        mStatusBarHelper.setColor(getResources().getColor(R.color.colorPrimaryDark));
-    }
 
     /**
      * 获取布局
@@ -110,7 +111,6 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
             mPresenter = null;
         }
         //mRxManager.clear();
-        ButterKnife.unbind(this);
         AppManager.getAppManager().finishActivity(this);
 
         super.onDestroy();
@@ -158,5 +158,25 @@ public abstract class BaseActivity<T extends BasePresenter<BaseView>> extends Ap
         }
         return 0;
     }
-
+    /**
+     * 通过类名启动Activity
+     *
+     * @param pClass
+     */
+    protected void openActivity(Class<?> pClass) {
+        openActivity(pClass, null);
+    }
+    /**
+     * 通过类名启动Activity，并且含有Bundle数据
+     *
+     * @param pClass
+     * @param pBundle
+     */
+    protected void openActivity(Class<?> pClass, Bundle pBundle) {
+        Intent intent = new Intent(this, pClass);
+        if (pBundle != null) {
+            intent.putExtras(pBundle);
+        }
+        startActivity(intent);
+    }
 }

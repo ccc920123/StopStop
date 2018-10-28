@@ -35,35 +35,35 @@ import com.zhy.m.permission.PermissionGrant;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class SetingActivity extends BaseActivity implements AMapLocationListener {
 
 
-    @Bind(R.id.title_back)
+    @BindView(R.id.title_back)
     ImageView titleBack;
-    @Bind(R.id.title_tv)
+    @BindView(R.id.title_tv)
     TextView titleTv;
-    @Bind(R.id.adderss_text)
+    @BindView(R.id.adderss_text)
     EditText adderssText;
-    @Bind(R.id.adess_onclick)
+    @BindView(R.id.adess_onclick)
     TextView adessOnclick;
-    @Bind(R.id.radio_hours)
+    @BindView(R.id.radio_hours)
     RadioButton radioHours;
-    @Bind(R.id.radio_number)
+    @BindView(R.id.radio_number)
     RadioButton radioNumber;
-    @Bind(R.id.radio_days)
+    @BindView(R.id.radio_days)
     RadioButton radioDays;
-    @Bind(R.id.way_radiogroup)
+    @BindView(R.id.way_radiogroup)
     RadioGroup wayRadiogroup;
-    @Bind(R.id.seat_text)
+    @BindView(R.id.seat_text)
     EditText seatText;
-    @Bind(R.id.press_text)
+    @BindView(R.id.press_text)
     EditText pressText;
-    @Bind(R.id.set_text)
+    @BindView(R.id.set_text)
     TextView setText;
-    @Bind(R.id.sava_button)
+    @BindView(R.id.sava_button)
     Button savaButton;
     private String[] setString;
     private int radTag = 0;

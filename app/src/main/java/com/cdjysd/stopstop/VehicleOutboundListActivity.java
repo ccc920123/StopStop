@@ -25,31 +25,35 @@ import com.cdjysd.stopstop.utils.ToastUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * C车辆出库
+ * Error:Execution failed for task ':app:transformDexArchiveWithExternalLibsDexMergerForQihuDebug'.
+ > java.lang.RuntimeException: com.android.builder.dexing.DexArchiveMergerException: Unable to merge dex
+ *
+ *
  */
 public class VehicleOutboundListActivity extends BaseActivity implements VehiceOutboundListView, ItemListener<InserCarBean> {
 
 
-    @Bind(R.id.title_back)
+    @BindView(R.id.title_back)
     ImageView titleBack;
-    @Bind(R.id.title_tv)
+    @BindView(R.id.title_tv)
     TextView titleTv;
-    @Bind(R.id.number_ed)
+    @BindView(R.id.number_ed)
     EditText numberEd;
-    @Bind(R.id.list_search)
+    @BindView(R.id.list_search)
     Button listSearch;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     RecyclerView mRecyclerView;
     BaseRecyclerAdapter mAdapter;
-    @Bind(R.id.show_notext)
+    @BindView(R.id.show_notext)
     TextView showNotext;
-    @Bind(R.id.no_layout)
+    @BindView(R.id.no_layout)
     RelativeLayout noLayout;
-    @Bind(R.id.activity_vehicle_outbound)
+    @BindView(R.id.activity_vehicle_outbound)
     LinearLayout activityVehicleOutbound;
 
     @Override

@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
@@ -48,27 +48,27 @@ import static com.cdjysd.stopstop.R.id.title_tv;
 public class DetailedActivity extends BaseActivity {
 
 
-    @Bind(R.id.title_back)
+    @BindView(R.id.title_back)
     ImageView titleBack;
-    @Bind(title_tv)
+    @BindView(title_tv)
     TextView titleTv;
-    @Bind(R.id.plate_image)
+    @BindView(R.id.plate_image)
     ImageView plateImage;
-    @Bind(R.id.plate_number)
+    @BindView(R.id.plate_number)
     TextView plateNumber;
-    @Bind(R.id.plate_color)
+    @BindView(R.id.plate_color)
     TextView plateColor;
-    @Bind(R.id.inset_time)
+    @BindView(R.id.inset_time)
     TextView insetTime;
-    @Bind(R.id.delete_time)
+    @BindView(R.id.delete_time)
     TextView deleteTime;
-    @Bind(R.id.all_time)
+    @BindView(R.id.all_time)
     TextView allTime;
-    @Bind(R.id.money)
+    @BindView(R.id.money)
     TextView moneyText;
-    @Bind(R.id.telphone_number)
+    @BindView(R.id.telphone_number)
     EditText telphoneNumber;
-    @Bind(R.id.delect_confirm)
+    @BindView(R.id.delect_confirm)
     Button delectConfirm;
 
     private InserCarBean carBean;

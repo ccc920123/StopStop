@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   android:background="@color/bg">
+    <ImageView
+        android:id="@+id/login_user_avatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/stopicon" />
+
+    <RelativeLayout
+        android:id="@+id/item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/login_user_avatar"
+        android:layout_marginTop="30dp"
+        android:background="@color/bg_white"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp" >
+
+        <ImageView
+            android:id="@+id/user_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/user_account_icon" />
+
+        <com.cdjysd.stopstop.widget.DeletableEditText
+            android:id="@+id/login_user_phone_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:layout_toRightOf="@+id/user_icon"
+            android:background="@color/bg_white"
+            android:drawableRight="@mipmap/user_delete_icon"
+            android:hint="@string/login_phone_hint"
+            android:inputType="numberSigned|phone" />
+
+        <com.cdjysd.stopstop.widget.DeletableEditText
+            android:id="@+id/login_user_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/login_user_phone_no"
+            android:layout_alignRight="@+id/login_user_phone_no"
+            android:layout_below="@+id/login_user_phone_no"
+            android:layout_marginTop="30dp"
+            android:background="@color/bg_white"
+            android:drawableRight="@mipmap/user_delete_icon"
+            android:hint="@string/login_password_hint"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:id="@+id/line"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@color/cal_line_grey"
+            android:height="1px" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/login_user_password"
+            android:layout_alignLeft="@+id/user_icon"
+            android:src="@mipmap/user_password_icon" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/login_regist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/login_forget_password"
+        android:layout_alignBottom="@+id/login_forget_password"
+        android:layout_alignRight="@+id/login_submit"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:text="@string/login_regist"
+        style="@style/login_text_blue" />
+
+    <TextView
+        android:id="@+id/login_forget_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login_submit"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp"
+        android:text="@string/login_forget_password"
+        style="@style/login_text_gray" />
+
+    <Button
+        android:id="@+id/login_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/item"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_blue_seletor"
+        android:text="@string/login_submit"
+        android:textColor="@color/bg_white" />
+
+</RelativeLayout>

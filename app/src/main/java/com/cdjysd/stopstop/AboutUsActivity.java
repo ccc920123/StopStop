@@ -12,17 +12,17 @@ import android.widget.TextView;
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 public class AboutUsActivity extends BaseActivity {
 
 
-    @Bind(R.id.title_back)
+    @BindView(R.id.title_back)
     ImageView titleBack;
-    @Bind(R.id.title_tv)
+    @BindView(R.id.title_tv)
     TextView titleTv;
-    @Bind(R.id.version)
+    @BindView(R.id.version)
     TextView version;
 
     @Override
