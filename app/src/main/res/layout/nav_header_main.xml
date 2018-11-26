@@ -18,11 +18,9 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         app:srcCompat="@mipmap/naveicom" />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="停车计时器"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

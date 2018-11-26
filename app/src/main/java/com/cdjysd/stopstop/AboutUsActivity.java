@@ -6,23 +6,18 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 public class AboutUsActivity extends BaseActivity {
 
 
-    @BindView(R.id.title_back)
     ImageView titleBack;
-    @BindView(R.id.title_tv)
     TextView titleTv;
-    @BindView(R.id.version)
     TextView version;
 
     @Override
@@ -33,13 +28,17 @@ public class AboutUsActivity extends BaseActivity {
     @Override
     protected void initInjector() {
 
-        titleTv.setText("关于我们");
+        titleBack=findViewById(R.id.title_back);
+        titleTv=findViewById(R.id.title_tv);
+        version=findViewById(R.id.version);
 
     }
 
     @Override
     protected void initEventAndData(Bundle savedInstanceState) {
+        titleTv.setText("关于我们");
         version.setText("版本号：V" + getAppVersionName(this));
+        titleBack.setOnClickListener(click);
     }
 
     @Override
@@ -48,11 +47,14 @@ public class AboutUsActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.title_back)
-    public void onClick() {
-        onBackPressed();
+   private View.OnClickListener click=new View.OnClickListener() {
+       @Override
+       public void onClick(View v) {
+           onBackPressed();
 
-    }
+       }
+   };
+
 
     @Override
     public void onBackPressed() {

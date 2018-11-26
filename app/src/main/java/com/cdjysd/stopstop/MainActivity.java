@@ -38,9 +38,6 @@ import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -49,9 +46,9 @@ import rx.functions.Action1;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.car_insert_textview)
+
     TextView carInsertTextview;
-    @BindView(R.id.car_delect_textview)
+
     TextView carDelectTextview;
     private AlertDialog alertDialog;
 
@@ -64,6 +61,11 @@ public class MainActivity extends BaseActivity
     @Override
     protected void initInjector() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        carInsertTextview=findViewById(R.id.car_insert_textview);
+        carDelectTextview=findViewById(R.id.car_delect_textview);
+        carInsertTextview.setOnClickListener(click);
+        carDelectTextview.setOnClickListener(click);
+
 //        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT)
 //        {
 //
@@ -199,6 +201,11 @@ public class MainActivity extends BaseActivity
             startActivity(Intent.createChooser(intent, getTitle()));
         } else if (id == R.id.nav_send) {//建议
             showCommentDialog();
+        }else if(id==R.id.nav_name)
+        {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -206,24 +213,27 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    @OnClick({R.id.car_insert_textview, R.id.car_delect_textview})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.car_insert_textview://车辆入库
-                MPermissions.requestPermissions(this, Comm.PREMISSIONS_CAMERA, Manifest.permission.CAMERA, Manifest.permission
-                        .WRITE_EXTERNAL_STORAGE);
+   private View.OnClickListener click=new View.OnClickListener() {
+       @Override
+       public void onClick(View view) {
+           switch (view.getId()) {
+               case R.id.car_insert_textview://车辆入库
+                   MPermissions.requestPermissions(MainActivity.this, Comm.PREMISSIONS_CAMERA, Manifest.permission.CAMERA, Manifest.permission
+                           .WRITE_EXTERNAL_STORAGE);
 
-                break;
-            case R.id.car_delect_textview://车辆出库
+                   break;
+               case R.id.car_delect_textview://车辆出库
 
 
-                Intent intent = new Intent(MainActivity.this, VehicleOutboundListActivity.class);
-                startActivity(intent);
-                finish();
+                   Intent intent = new Intent(MainActivity.this, VehicleOutboundListActivity.class);
+                   startActivity(intent);
+                   finish();
 
-                break;
-        }
-    }
+                   break;
+           }
+       }
+   };
+
 
     @PermissionGrant(Comm.PREMISSIONS_CAMERA)
     public void requestCameraSucceed() {
@@ -262,9 +272,9 @@ public class MainActivity extends BaseActivity
         view.setLayoutParams(new DrawerLayout.LayoutParams(ScreenUtils.getInstance(this).getWidth() - ContextUtils.dip2px(this, 20),
                 ContextUtils.dip2px(this, 200),
                 Gravity.CENTER));
-        final EditText et_content = ButterKnife.findById(view, R.id.et_content);
+        final EditText et_content = view.findViewById(R.id.et_content);
         et_content.setHint("朋友，你的意见，将会让我们把产品做得更好。");
-        final TextView tv_length = ButterKnife.findById(view, R.id.tv_length);
+        final TextView tv_length = view.findViewById(R.id.tv_length);
 
         et_content.addTextChangedListener(new TextWatcher() {
             @Override

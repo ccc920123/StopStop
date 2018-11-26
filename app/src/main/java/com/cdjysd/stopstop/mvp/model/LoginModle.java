@@ -39,6 +39,7 @@ public class LoginModle implements LoginModelImp {
                     {
                         if (object.get(0).getPassword().equals(pwd))//登录成功
                         {
+
                             callBack.succeed(object.get(0).getPhone());
 
 

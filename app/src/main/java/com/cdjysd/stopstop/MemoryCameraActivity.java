@@ -67,8 +67,8 @@ public class MemoryCameraActivity extends AppCompatActivity implements
         SurfaceHolder.Callback, Camera.PreviewCallback {
     private Camera camera;
     private SurfaceView surfaceView;
-    private static final String PATH = Environment
-            .getExternalStorageDirectory().toString() + "/STOPSTOP/Camera/";
+//    private static final String PATH = Environment
+//            .getExternalStorageDirectory().toString() + "/STOPSTOP/Camera/";
     // private TextView resultEditText;
     private Button back_btn, flash_btn, back;
     private Button take_pic;//手动录入
@@ -88,7 +88,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
     private String[] fieldvalue = new String[14];
     private int rotation = 0;
     private static int tempUiRot = 0;
-    private Bitmap bitmap, bitmap1;
+//    private Bitmap bitmap, bitmap1;
     private Vibrator mVibrator;
     private PlateRecognitionParameter prp = new PlateRecognitionParameter();
     ;
@@ -101,7 +101,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
     private boolean cameraRecogUtill = false; // cameraRecogUtill
     // true:拍照识别采用拍摄照片（整图）根据路径识别，不受扫描框限制
     // false:采用视频流 单帧识别模式 识别扫描框内的车牌
-    private String path;// 圖片保存的路徑
+//    private String path;// 圖片保存的路徑
     public PlateRecogService.MyBinder recogBinder;
     private boolean isAutoFocus = true; // 是否开启自动对焦 true:开启，定时对焦 false:不开起
     // ，只在图片模糊时对焦
@@ -334,7 +334,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                         MemoryResultActivity.class);
                 intent.putExtra("number", number);
                 intent.putExtra("color", color);
-                intent.putExtra("path", path);
+//                intent.putExtra("path", path);
                 // intent.putExtra("time", fieldvalue[11]);
                 intent.putExtra("recogType", false);
                 intent.putExtra("isatuo",false);//是否自动，true自动
@@ -532,8 +532,8 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                             preWidth, preHeight, null);
                     yuvimage.compressToJpeg(
                             new Rect(0, 0, preWidth, preHeight), 100, baos);
-                    bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(),
-                            0, baos.size(), options);
+//                    bitmap = BitmapFactory.decodeByteArray(baos.toByteArray(),
+//                            0, baos.size(), options);
                     Matrix matrix = new Matrix();
                     matrix.reset();
                     if (rotation == 90) {
@@ -544,11 +544,11 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                         matrix.setRotate(270);
                         //
                     }
-                    bitmap1 = Bitmap
-                            .createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                                    bitmap.getHeight(), matrix, true);
-                    path = savePicture(bitmap1);
-                    prp.pic = path;
+//                    bitmap1 = Bitmap
+//                            .createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+//                                    bitmap.getHeight(), matrix, true);
+//                    path = savePicture(bitmap1);
+//                    prp.pic = path;
                     fieldvalue = recogBinder.doRecogDetail(prp);
                     nRet = recogBinder.getnRet();
                     if (nRet != 0) {
@@ -567,7 +567,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                                 MemoryResultActivity.class);
                         intent.putExtra("number", number);
                         intent.putExtra("color", color);
-                        intent.putExtra("path", path);
+//                        intent.putExtra("path", path);
                         // intent.putExtra("time", fieldvalue[11]);
                         intent.putExtra("recogType", false);
                         intent.putExtra("isatuo",true);//是否自动，true自动
@@ -813,14 +813,14 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                                 yuvimage.compressToJpeg(new Rect(0, 0,
                                         Width, Height), 100, baos);
 
-                                bitmap = BitmapFactory.decodeByteArray(
-                                        baos.toByteArray(), 0, baos.size(),
-                                        options);
+//                                bitmap = BitmapFactory.decodeByteArray(
+//                                        baos.toByteArray(), 0, baos.size(),
+//                                        options);
 
-                                bitmap1 = Bitmap.createBitmap(bitmap, 0, 0,
-                                        bitmap.getWidth(),
-                                        bitmap.getHeight(), null, true);
-                                path = savePicture(bitmap1);
+//                                bitmap1 = Bitmap.createBitmap(bitmap, 0, 0,
+//                                        bitmap.getWidth(),
+//                                        bitmap.getHeight(), null, true);
+//                                path = savePicture(bitmap1);
 
                                 mVibrator = (Vibrator) getApplication()
                                         .getSystemService(
@@ -842,7 +842,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                                         - Integer.valueOf(fieldvalue[8]);
                                 intent.putExtra("number", number);
                                 intent.putExtra("color", color);
-                                intent.putExtra("path", path);
+//                                intent.putExtra("path", path);
                                 intent.putExtra("left", left);
                                 intent.putExtra("top", top);
                                 intent.putExtra("width", w);
@@ -918,8 +918,8 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                                 ImageFormat.NV21, preWidth, preHeight, null);
                         yuvimage.compressToJpeg(new Rect(0, 0, preWidth,
                                 preHeight), 100, baos);
-                        bitmap = BitmapFactory.decodeByteArray(
-                                baos.toByteArray(), 0, baos.size(), options);
+//                        bitmap = BitmapFactory.decodeByteArray(
+//                                baos.toByteArray(), 0, baos.size(), options);
 
                         Matrix matrix = new Matrix();
                         matrix.reset();
@@ -931,10 +931,10 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                             matrix.setRotate(270);
                             //
                         }
-                        bitmap1 = Bitmap.createBitmap(bitmap, 0, 0,
-                                bitmap.getWidth(), bitmap.getHeight(), matrix,
-                                true);
-                        path = savePicture(bitmap1);
+//                        bitmap1 = Bitmap.createBitmap(bitmap, 0, 0,
+//                                bitmap.getWidth(), bitmap.getHeight(), matrix,
+//                                true);
+//                        path = savePicture(bitmap1);
 
                         if (fieldvalue[11] != null
                                 && !fieldvalue[11].equals("")) {
@@ -968,7 +968,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
 
                         intent.putExtra("number", number);
                         intent.putExtra("color", color);
-                        intent.putExtra("path", path);
+//                        intent.putExtra("path", path);
                         intent.putExtra("left", left);
                         intent.putExtra("top", top);
                         intent.putExtra("width", w);
@@ -993,20 +993,20 @@ public class MemoryCameraActivity extends AppCompatActivity implements
     protected void onDestroy() {
         // TODO Auto-generated method stub
         super.onDestroy();
-        if (bitmap != null) {
-            if (!bitmap.isRecycled()) {
-                bitmap.recycle();
-                bitmap = null;
-            }
-
-        }
-        if (bitmap1 != null) {
-            if (!bitmap1.isRecycled()) {
-                bitmap1.recycle();
-                bitmap1 = null;
-            }
-
-        }
+//        if (bitmap != null) {
+//            if (!bitmap.isRecycled()) {
+//                bitmap.recycle();
+//                bitmap = null;
+//            }
+//
+//        }
+//        if (bitmap1 != null) {
+//            if (!bitmap1.isRecycled()) {
+//                bitmap1.recycle();
+//                bitmap1 = null;
+//            }
+//
+//        }
 
         if (mVibrator != null) {
             mVibrator.cancel();
@@ -1059,30 +1059,30 @@ public class MemoryCameraActivity extends AppCompatActivity implements
 //        return super.onKeyDown(keyCode, event);
 //    }
 
-    public String savePicture(Bitmap bitmap) {
-        String strCaptureFilePath = PATH + "plateID_" + pictureName() + ".jpg";
-        File dir = new File(PATH);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File file = new File(strCaptureFilePath);
-        if (file.exists()) {
-            file.delete();
-        }
-        try {
-            file.createNewFile();
-            BufferedOutputStream bos = new BufferedOutputStream(
-                    new FileOutputStream(file));
-
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-            bos.flush();
-            bos.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return strCaptureFilePath;
-    }
+//    public String savePicture(Bitmap bitmap) {
+//        String strCaptureFilePath = PATH + "plateID_" + pictureName() + ".jpg";
+//        File dir = new File(PATH);
+//        if (!dir.exists()) {
+//            dir.mkdirs();
+//        }
+//        File file = new File(strCaptureFilePath);
+//        if (file.exists()) {
+//            file.delete();
+//        }
+//        try {
+//            file.createNewFile();
+//            BufferedOutputStream bos = new BufferedOutputStream(
+//                    new FileOutputStream(file));
+//
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+//            bos.flush();
+//            bos.close();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return strCaptureFilePath;
+//    }
 
     public String pictureName() {
         String str = "";

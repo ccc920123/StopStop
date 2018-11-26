@@ -25,35 +25,22 @@ import com.cdjysd.stopstop.utils.ToastUtils;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 /**
  * C车辆出库
  * Error:Execution failed for task ':app:transformDexArchiveWithExternalLibsDexMergerForQihuDebug'.
- > java.lang.RuntimeException: com.android.builder.dexing.DexArchiveMergerException: Unable to merge dex
- *
- *
+ * > java.lang.RuntimeException: com.android.builder.dexing.DexArchiveMergerException: Unable to merge dex
  */
 public class VehicleOutboundListActivity extends BaseActivity implements VehiceOutboundListView, ItemListener<InserCarBean> {
 
 
-    @BindView(R.id.title_back)
     ImageView titleBack;
-    @BindView(R.id.title_tv)
     TextView titleTv;
-    @BindView(R.id.number_ed)
     EditText numberEd;
-    @BindView(R.id.list_search)
     Button listSearch;
-    @BindView(R.id.list)
     RecyclerView mRecyclerView;
     BaseRecyclerAdapter mAdapter;
-    @BindView(R.id.show_notext)
     TextView showNotext;
-    @BindView(R.id.no_layout)
     RelativeLayout noLayout;
-    @BindView(R.id.activity_vehicle_outbound)
     LinearLayout activityVehicleOutbound;
 
     @Override
@@ -63,6 +50,19 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
 
     @Override
     protected void initInjector() {
+        titleBack = findViewById(R.id.title_back);
+        titleTv = findViewById(R.id.title_tv);
+        numberEd = findViewById(R.id.number_ed);
+        listSearch = findViewById(R.id.list_search);
+        mRecyclerView = findViewById(R.id.list);
+        BaseRecyclerAdapter mAdapter;
+        showNotext = findViewById(R.id.show_notext);
+        noLayout = findViewById(R.id.no_layout);
+        activityVehicleOutbound = findViewById(R.id.activity_vehicle_outbound);
+
+        titleBack.setOnClickListener(click);
+        listSearch.setOnClickListener(click);
+
         titleTv.setText("入库查询");
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -89,25 +89,28 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
     }
 
 
-    @OnClick({R.id.title_back, R.id.list_search})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.title_back:
-                Intent intent = new Intent(VehicleOutboundListActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+   private View.OnClickListener click=new View.OnClickListener() {
+       @Override
+       public void onClick(View view) {
+           switch (view.getId()) {
+               case R.id.title_back:
+                   Intent intent = new Intent(VehicleOutboundListActivity.this, MainActivity.class);
+                   startActivity(intent);
+                   finish();
 
-                break;
-            case R.id.list_search:
-                //查找数据库的车辆
-                if ("".equals(numberEd.getText().toString())) {
-                    ToastUtils.showToast(VehicleOutboundListActivity.this, "请输入查询条件");
-                } else {
-                    ((VehiceOutboundListPresenter) mPresenter).selectDBDate(numberEd.getText().toString());
-                }
-                break;
-        }
-    }
+                   break;
+               case R.id.list_search:
+                   //查找数据库的车辆
+                   if ("".equals(numberEd.getText().toString())) {
+                       ToastUtils.showToast(VehicleOutboundListActivity.this, "请输入查询条件");
+                   } else {
+                       ((VehiceOutboundListPresenter) mPresenter).selectDBDate(numberEd.getText().toString());
+                   }
+                   break;
+           }
+       }
+   };
+
 
     @Override
     public void setAdapter(List<InserCarBean> data) {
@@ -161,11 +164,9 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
 
 
         Intent intent = new Intent(VehicleOutboundListActivity.this, DetailedActivity.class);
-        intent.putExtra("BEAN",mdata);
+        intent.putExtra("BEAN", mdata);
         startActivity(intent);
         finish();
-
-
 
 
     }

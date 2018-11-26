@@ -8,15 +8,11 @@ import android.widget.TextView;
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 public class AgreementActivity extends BaseActivity {
 
-    @BindView(R.id.title_back_img)
     ImageView titleBackImg;
-    @BindView(R.id.title_title)
     TextView titleTitle;
 
 
@@ -27,7 +23,8 @@ public class AgreementActivity extends BaseActivity {
 
     @Override
     protected void initInjector() {
-
+        titleBackImg=findViewById(R.id.title_back_img);
+        titleTitle=findViewById(R.id.title_title);
     }
 
     @Override

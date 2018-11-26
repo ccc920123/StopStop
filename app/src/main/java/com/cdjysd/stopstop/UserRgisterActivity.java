@@ -16,8 +16,13 @@ import android.widget.TextView;
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.bean.USER;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
+import com.cdjysd.stopstop.mvp.presenter.UserRgisterPresenter;
+import com.cdjysd.stopstop.mvp.view.UserRgisterView;
 import com.cdjysd.stopstop.utils.NetUtils;
+import com.cdjysd.stopstop.utils.SharedPreferencesHelper;
 import com.cdjysd.stopstop.utils.ToastUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,13 +30,15 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * 注册界面/忘记密码
  */
-public class UserRgisterActivity extends BaseActivity {
+public class UserRgisterActivity extends BaseActivity implements UserRgisterView {
 
 
     @BindView(R.id.title_back_imguser)
@@ -237,24 +244,22 @@ public class UserRgisterActivity extends BaseActivity {
      * 调用接口上传注册数据
      */
     private void uploadingData() {
-        BmobQuery<USER> query = new BmobQuery<USER>();
-//        query.add
 
 
-        USER user=new USER();
+
+
+
+
+        final USER user=new USER();
         user.setPhone(phoneNo);
         user.setPassword(passWord);
+        ((UserRgisterPresenter)mPresenter).setUserRgister(user);
 
-  user.update(new UpdateListener() {
-      @Override
-      public void done(BmobException e) {
-          if (e == null) {
-              ToastUtils.showToast(UserRgisterActivity.this, "注册成功");
-          } else {
-              ToastUtils.showToast(UserRgisterActivity.this, "注册失败,请反馈到相关人员");
-          }
-      }
-  });
+
+
+
+
+
 
     }
 
@@ -359,14 +364,28 @@ public class UserRgisterActivity extends BaseActivity {
 
     @Override
     public BasePresenter getPresenter() {
-        return null;
+        return new UserRgisterPresenter();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+    public void showLoadProgressDialog(String str) {
+        showLoading(str);
+    }
+
+    @Override
+    public void disDialog() {dissLoadDialog();
+
+    }
+
+    @Override
+    public void showToast(String message) {
+        ToastUtils.showToast(this, message);
+    }
+
+    @Override
+    public void registUserRgister(String phoneNo) {
+        SharedPreferencesHelper.putString(UserRgisterActivity.this,"PHONE",phoneNo);
+        openActivity(MainActivity.class);
     }
 
 

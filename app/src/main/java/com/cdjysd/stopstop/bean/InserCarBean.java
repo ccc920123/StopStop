@@ -16,19 +16,11 @@ import java.io.Serializable;
 
 public class InserCarBean extends DataSupport implements Serializable {
 
-    private String carimage;
     private String hphm;
     private String hpys;
     private String inserttime;
 
 
-    public String getCarimage() {
-        return carimage;
-    }
-
-    public void setCarimage(String carimage) {
-        this.carimage = carimage;
-    }
 
     public String getHphm() {
         return hphm;

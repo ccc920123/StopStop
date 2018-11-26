@@ -33,26 +33,6 @@
         android:layout_height="@dimen/dp_30">
 
         <TextView
-            android:id="@+id/car_color_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Style_VehicleInfo_TextView"
-            android:text="号牌颜色：" />
-
-        <TextView
-            android:id="@+id/car_color_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Style_VehicleInfo_TextView"
-            android:layout_toRightOf="@id/car_color_tv"
-            tools:text="1235465" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:layout_height="@dimen/dp_30">
-
-        <TextView
             android:id="@+id/car_plate_type_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

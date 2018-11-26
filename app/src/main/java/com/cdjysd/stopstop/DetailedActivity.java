@@ -37,8 +37,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -48,27 +46,15 @@ import static com.cdjysd.stopstop.R.id.title_tv;
 public class DetailedActivity extends BaseActivity {
 
 
-    @BindView(R.id.title_back)
     ImageView titleBack;
-    @BindView(title_tv)
     TextView titleTv;
-    @BindView(R.id.plate_image)
-    ImageView plateImage;
-    @BindView(R.id.plate_number)
     TextView plateNumber;
-    @BindView(R.id.plate_color)
-    TextView plateColor;
-    @BindView(R.id.inset_time)
     TextView insetTime;
-    @BindView(R.id.delete_time)
+    TextView imageNum;
     TextView deleteTime;
-    @BindView(R.id.all_time)
     TextView allTime;
-    @BindView(R.id.money)
     TextView moneyText;
-    @BindView(R.id.telphone_number)
     EditText telphoneNumber;
-    @BindView(R.id.delect_confirm)
     Button delectConfirm;
 
     private InserCarBean carBean;
@@ -87,8 +73,23 @@ public class DetailedActivity extends BaseActivity {
     @Override
     protected void initInjector() {
 
+        titleBack = findViewById(R.id.title_back);
+        titleTv = findViewById(R.id.title_tv);
+        plateNumber = findViewById(R.id.plate_number);
+        insetTime = findViewById(R.id.inset_time);
+        deleteTime = findViewById(R.id.delete_time);
+        allTime = findViewById(R.id.all_time);
+        moneyText = findViewById(R.id.money);
+        telphoneNumber = findViewById(R.id.telphone_number);
+        delectConfirm = findViewById(R.id.delect_confirm);
+        imageNum = findViewById(R.id.imagenumber);
+
+
         carBean = (InserCarBean) getIntent().getSerializableExtra("BEAN");
         titleTv.setText("出库详情");
+        titleBack.setOnClickListener(click);
+        delectConfirm.setOnClickListener(click);
+
 
     }
 
@@ -96,27 +97,8 @@ public class DetailedActivity extends BaseActivity {
     @Override
     protected void initEventAndData(Bundle savedInstanceState) {
 
-        if (carBean.getCarimage() != null && !"".equals(carBean.getCarimage())) {
-
-            Observable.create(new Observable.OnSubscribe<Bitmap>() {
-                @Override
-                public void call(Subscriber<? super Bitmap> subscriber) {
-                    Bitmap bitmap = ImageUtility.base64ToBitmap(carBean.getCarimage());
-                    subscriber.onNext(bitmap);
-                }
-            }).compose(RxSchedulers.schedulersTransformer).subscribe(new Action1<Bitmap>() {
-                @Override
-                public void call(Bitmap beans) {
-
-                    plateImage.setImageBitmap(beans);
-                }
-            });
-
-
-        }
-
+        imageNum.setText(carBean.getHphm());
         plateNumber.setText(carBean.getHphm());
-        plateColor.setText(carBean.getHpys());
         insetTime.setText(carBean.getInserttime());
         deleteTime.setText(Date_U.getCurrentTime2());
         Long oldTime = Date_U.datayyyMMdd(carBean.getInserttime());
@@ -253,30 +235,33 @@ public class DetailedActivity extends BaseActivity {
         return null;
     }
 
-    @OnClick({R.id.title_back, R.id.delect_confirm})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.title_back:
-                onBackPressed();
-                break;
-            case R.id.delect_confirm:
-                if ("".equals(telphoneNumber.getText().toString().trim())) {
-                    DataSupport.deleteAll(InserCarBean.class, "hphm = ? and hpys = ?", carBean.getHphm(), carBean.getHpys());
-                    Intent intent = new Intent(DetailedActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-
-                    if (isMobileNO(telphoneNumber.getText().toString().trim())) {
-                        MPermissions.requestPermissions(this, Comm.SEND_SMS, Manifest.permission.SEND_SMS);//申请发送短信权限
+    private View.OnClickListener click = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.title_back:
+                    onBackPressed();
+                    break;
+                case R.id.delect_confirm:
+                    if ("".equals(telphoneNumber.getText().toString().trim())) {
+                        DataSupport.deleteAll(InserCarBean.class, "hphm = ? and hpys = ?", carBean.getHphm(), carBean.getHpys());
+                        Intent intent = new Intent(DetailedActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
-                        ToastUtils.showToast(DetailedActivity.this, "请输入正确的手机号才能发送停车详情");
-                    }
-                }
 
-                break;
+                        if (isMobileNO(telphoneNumber.getText().toString().trim())) {
+                            MPermissions.requestPermissions(DetailedActivity.this, Comm.SEND_SMS, Manifest.permission.SEND_SMS);//申请发送短信权限
+                        } else {
+                            ToastUtils.showToast(DetailedActivity.this, "请输入正确的手机号才能发送停车详情");
+                        }
+                    }
+
+                    break;
+            }
         }
-    }
+    };
+
 
     @PermissionGrant(Comm.SEND_SMS)
     public void requestCameraSucceed() {
@@ -286,9 +271,9 @@ public class DetailedActivity extends BaseActivity {
 //                "停车时长:" + allTime.getText() + ",金额:" + moneyText.getText() +
 //                ",停车时间:" + insetTime.getText() + "至" + deleteTime.getText() +
 //                "。欢迎再次光临[成都金盈时代]";
-      String message=plateNumber.getText() + "车主您好.您在[" + bean.getAdesstr() + "]处停车消费如下:\n"+
-              "入库时间:"+insetTime.getText()+"\n出库时间:"+deleteTime.getText()+"\n时长:"+allTime.getText()+
-              "金额:" + moneyText.getText() +"欢迎再次光临[成都金盈时代]";
+        String message = plateNumber.getText() + "车主您好.您在[" + bean.getAdesstr() + "]处停车消费如下:\n" +
+                "入库时间:" + insetTime.getText() + "\n出库时间:" + deleteTime.getText() + "\n时长:" + allTime.getText() +
+                "金额:" + moneyText.getText() + "欢迎再次光临[成都金盈时代]";
 
         sendSMS(telphoneNumber.getText().toString().trim(), message);
 

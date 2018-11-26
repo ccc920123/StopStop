@@ -11,31 +11,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:gravity="center_vertical"
+        android:layout_weight="1.0"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/imagenum"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_22"
+            android:layout_height="160dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp_60"
             android:gravity="center"
-            android:text="基本信息"
-            android:layout_marginTop="@dimen/dp_24"
-            />
-
-        <ImageView
-            android:id="@+id/plate_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_6"
-            android:layout_marginRight="@dimen/dp_6"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_14" />
+            android:text="川A12345"
+            android:background="@color/text_light_blue"
+            android:layout_marginTop="@dimen/dp_24"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginLeft="@dimen/dp_6"
             android:layout_marginRight="@dimen/dp_6"
             android:layout_marginTop="@dimen/dp_14"
@@ -59,36 +52,7 @@
                 android:textSize="@dimen/sp_22" />
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_6"
-            android:layout_marginRight="@dimen/dp_6"
-            android:layout_marginTop="@dimen/dp_14"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="号牌颜色:"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_22" />
-
-            <TextView
-                android:id="@+id/plate_color"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_40"
-                android:layout_weight="1.0"
-                android:background="@drawable/spinner_bg"
-                android:gravity="center"
-                android:hint="请选择"
-                android:paddingLeft="3dip"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_22" />
-        </LinearLayout>
-
+        />
         <Button
             android:id="@+id/confirm"
             android:layout_width="match_parent"
@@ -102,6 +66,11 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_22"
             android:text="确定入库" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0"/>
+
     </LinearLayout>
 
 

@@ -6,4 +6,5 @@
     <item name="ic_menu_share" type="drawable">@drawable/fenxiang</item>
     <item name="ic_menu_send" type="drawable">@drawable/jianyi</item>
     <item name="ic_menu_pingjia" type="drawable">@drawable/pingjia</item>
+    <item name="ic_menu_nameqh" type="drawable">@drawable/namephpre</item>
 </resources>

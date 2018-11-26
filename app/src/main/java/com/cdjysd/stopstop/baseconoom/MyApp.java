@@ -1,7 +1,9 @@
 package com.cdjysd.stopstop.baseconoom;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.multidex.MultiDex;
 
 
 import org.litepal.LitePal;
@@ -29,7 +31,12 @@ public class MyApp extends Application {
 
 
     }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(base);
 
+    }
 
     /**
      * 初始化

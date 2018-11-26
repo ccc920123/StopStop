@@ -6,18 +6,12 @@ import android.widget.TextView;
 import com.cdjysd.stopstop.R;
 import com.cdjysd.stopstop.bean.InserCarBean;
 
-import butterknife.BindView;
-
 /**
  * Created by Administrator on 2017/3/7.
  */
 public class VehiceOutboundListHolder extends BaseHolder<InserCarBean> {
 
-    @BindView(R.id.car_hphm_text)
     TextView carHphmText;
-    @BindView(R.id.car_color_text)
-    TextView carColorText;
-    @BindView(R.id.car_time_text)
     TextView carTimeText;
 
     private InserCarBean mData;
@@ -29,10 +23,12 @@ public class VehiceOutboundListHolder extends BaseHolder<InserCarBean> {
     @Override
     public void setData(InserCarBean mData) {
         super.setData(mData);
-        this.mData = mData;
-        carHphmText.setText(mData.getHphm());
-        carColorText.setText(mData.getHpys());
-        carTimeText.setText(mData.getInserttime());
+
+        carHphmText=mView.findViewById(R.id.car_hphm_text);
+        carTimeText=mView.findViewById(R.id.car_time_text);
+            this.mData = mData;
+            carHphmText.setText(mData.getHphm());
+            carTimeText.setText(mData.getInserttime());
     }
 
     @Override

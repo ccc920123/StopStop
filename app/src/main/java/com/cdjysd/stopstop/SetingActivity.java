@@ -32,38 +32,21 @@ import com.zhy.m.permission.MPermissions;
 import com.zhy.m.permission.PermissionDenied;
 import com.zhy.m.permission.PermissionGrant;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 public class SetingActivity extends BaseActivity implements AMapLocationListener {
 
 
-    @BindView(R.id.title_back)
     ImageView titleBack;
-    @BindView(R.id.title_tv)
     TextView titleTv;
-    @BindView(R.id.adderss_text)
     EditText adderssText;
-    @BindView(R.id.adess_onclick)
     TextView adessOnclick;
-    @BindView(R.id.radio_hours)
     RadioButton radioHours;
-    @BindView(R.id.radio_number)
     RadioButton radioNumber;
-    @BindView(R.id.radio_days)
     RadioButton radioDays;
-    @BindView(R.id.way_radiogroup)
     RadioGroup wayRadiogroup;
-    @BindView(R.id.seat_text)
     EditText seatText;
-    @BindView(R.id.press_text)
     EditText pressText;
-    @BindView(R.id.set_text)
     TextView setText;
-    @BindView(R.id.sava_button)
     Button savaButton;
     private String[] setString;
     private int radTag = 0;
@@ -89,6 +72,22 @@ public class SetingActivity extends BaseActivity implements AMapLocationListener
     };
     private String PDA_IMEI;
 
+   private void init()
+    {
+         titleBack=findViewById(R.id.title_back);
+         titleTv=findViewById(R.id.title_tv);
+         adderssText=findViewById(R.id.adderss_text);
+         adessOnclick=findViewById(R.id.adess_onclick);
+         radioHours=findViewById(R.id.radio_hours);
+         radioNumber=findViewById(R.id.radio_number);
+         radioDays=findViewById(R.id.radio_days);
+         wayRadiogroup=findViewById(R.id.way_radiogroup);
+         seatText=findViewById(R.id.seat_text);
+         pressText=findViewById(R.id.press_text);
+         setText=findViewById(R.id.set_text);
+         savaButton=findViewById(R.id.sava_button);
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_seting;
@@ -96,6 +95,8 @@ public class SetingActivity extends BaseActivity implements AMapLocationListener
 
     @Override
     protected void initInjector() {
+        init();
+
         mlocationClient = new AMapLocationClient(this);
         //初始化定位参数
         mLocationOption = new AMapLocationClientOption();
@@ -133,10 +134,15 @@ public class SetingActivity extends BaseActivity implements AMapLocationListener
 
 
         }
+
     }
 
     @Override
     protected void initEventAndData(Bundle savedInstanceState) {
+
+        titleBack.setOnClickListener(click);
+        savaButton.setOnClickListener(click);
+        adessOnclick.setOnClickListener(click);
         wayRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -189,39 +195,42 @@ public class SetingActivity extends BaseActivity implements AMapLocationListener
     }
 
 
-    @OnClick({R.id.title_back, R.id.adess_onclick, R.id.sava_button})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.title_back:
-                onBackPressed();
-                break;
-            case R.id.adess_onclick://地图搜索地址
-                MPermissions.requestPermissions(this, Comm.GPS, Manifest.permission
-                        .ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION);
+   private View.OnClickListener click=new View.OnClickListener() {
+       @Override
+       public void onClick(View v) {
+           switch (v.getId()) {
+               case R.id.title_back:
+                   onBackPressed();
+                   break;
+               case R.id.adess_onclick://地图搜索地址
+                   MPermissions.requestPermissions(SetingActivity.this, Comm.GPS, Manifest.permission
+                           .ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION);
 
-                break;
-            case R.id.sava_button://保存数据，先将数据上传到服务器，在保存到共享内存
-                //判断数据是否为空
-                if ("".equals(adderssText.getText().toString().trim()) ||
-                        "".equals(seatText.getText().toString().trim()) ||
-                        "".equals(pressText.getText().toString().trim())) {
-                    ToastUtils.showToast(SetingActivity.this, "请填写完相应的数据");
-                } else {
-                    SetBean msetBean = new SetBean(SetingActivity.this);
-                    msetBean.setAdesstr(adderssText.getText().toString());
-                    msetBean.setLag(Latitude);
-                    msetBean.setLog(Longitude);
-                    msetBean.setCarnumber(Integer.parseInt(seatText.getText().toString()));
-                    msetBean.setMoney(Float.parseFloat(pressText.getText().toString()));
-                    msetBean.setWay(String.valueOf(radTag));
-                    msetBean.setIMIE(PDA_IMEI);
-                    onBackPressed();
-                }
+                   break;
+               case R.id.sava_button://保存数据，先将数据上传到服务器，在保存到共享内存
+                   //判断数据是否为空
+                   if ("".equals(adderssText.getText().toString().trim()) ||
+                           "".equals(seatText.getText().toString().trim()) ||
+                           "".equals(pressText.getText().toString().trim())) {
+                       ToastUtils.showToast(SetingActivity.this, "请填写完相应的数据");
+                   } else {
+                       SetBean msetBean = new SetBean(SetingActivity.this);
+                       msetBean.setAdesstr(adderssText.getText().toString());
+                       msetBean.setLag(Latitude);
+                       msetBean.setLog(Longitude);
+                       msetBean.setCarnumber(Integer.parseInt(seatText.getText().toString()));
+                       msetBean.setMoney(Float.parseFloat(pressText.getText().toString()));
+                       msetBean.setWay(String.valueOf(radTag));
+                       msetBean.setIMIE(PDA_IMEI);
+                       onBackPressed();
+                   }
 
 
-                break;
-        }
-    }
+                   break;
+           }
+       }
+   };
+
 
     @PermissionGrant(Comm.GPS)
     public void requestSdcardSuccess() {
