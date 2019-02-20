@@ -26,6 +26,7 @@ import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.baseconoom.Comm;
 import com.cdjysd.stopstop.bean.SetBean;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
+import com.cdjysd.stopstop.utils.SharedPreferencesHelper;
 import com.cdjysd.stopstop.utils.ToastUtils;
 import com.cdjysd.stopstop.widget.dialog.AlertDialog;
 import com.zhy.m.permission.MPermissions;
@@ -259,8 +260,14 @@ public class SetingActivity extends BaseActivity implements AMapLocationListener
     public void onBackPressed() {
         super.onBackPressed();
         mlocationClient.stopLocation();
-        Intent intent = new Intent(SetingActivity.this, MainActivity.class);
-        startActivity(intent);
+        if ("".equals(SharedPreferencesHelper.getString(this, "PHONE", ""))) {
+            Intent intent = new Intent(SetingActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }else {
+
+            Intent intent = new Intent(SetingActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
         finish();
 
     }

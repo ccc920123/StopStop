@@ -18,41 +18,41 @@
         <TextView
             android:id="@+id/imagenum"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="120dp"
             android:textColor="@color/white"
             android:textSize="@dimen/dp_60"
             android:gravity="center"
-            android:text="川A12345"
+            android:text="？"
             android:background="@color/text_light_blue"
-            android:layout_marginTop="@dimen/dp_24"/>
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_6"
             android:layout_marginRight="@dimen/dp_6"
             android:layout_marginTop="@dimen/dp_14"
             android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="号牌号码:"
+                android:text="请在下方输入号牌:"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_22" />
-
-            <EditText
-                android:id="@+id/plate_number"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_40"
-                android:layout_weight="1.0"
-                android:background="@drawable/edittextshape"
-                android:gravity="center"
-                android:textSize="@dimen/sp_22" />
-
+                android:textSize="@dimen/sp_16" />
+            <com.parkingwang.vehiclekeyboard.view.InputView
+                android:id="@+id/carnuber"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_20"
+                android:layout_marginLeft="@dimen/dp_20"
+                />
         </LinearLayout>
-        />
+
+
         <Button
             android:id="@+id/confirm"
             android:layout_width="match_parent"

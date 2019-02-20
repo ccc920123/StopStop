@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/StopStop.iml" filepath="$PROJECT_DIR$/StopStop.iml" />
       <module fileurl="file://D:\MyProject\StopStop-master\StopStop.iml" filepath="D:\MyProject\StopStop-master\StopStop.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/keyboard/keyboard.iml" filepath="$PROJECT_DIR$/keyboard/keyboard.iml" />
     </modules>
   </component>
 </project>

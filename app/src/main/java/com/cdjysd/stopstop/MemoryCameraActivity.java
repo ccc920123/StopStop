@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -21,7 +20,6 @@ import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.Size;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -51,10 +49,7 @@ import com.kernal.plateid.PlateCfgParameter;
 import com.kernal.plateid.PlateRecogService;
 import com.kernal.plateid.PlateRecognitionParameter;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
@@ -71,7 +66,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
 //            .getExternalStorageDirectory().toString() + "/STOPSTOP/Camera/";
     // private TextView resultEditText;
     private Button back_btn, flash_btn, back;
-    private Button take_pic;//手动录入
+//    private Button take_pic;//手动录入
     private PlateViewfinderView myview;
     private RelativeLayout re;
     private int width, height, screenWidth, screenHeight;
@@ -232,7 +227,6 @@ public class MemoryCameraActivity extends AppCompatActivity implements
         back_btn = (Button) findViewById(R.id.back_camera);
         flash_btn = (Button) findViewById(R.id.flash_camera);
         back = (Button) findViewById(R.id.back);
-        take_pic = (Button) findViewById(R.id.take_pic_btn);
         re = (RelativeLayout) findViewById(R.id.memory);
         re.addOnLayoutChangeListener(new OnLayoutChangeListener() {
 
@@ -251,11 +245,6 @@ public class MemoryCameraActivity extends AppCompatActivity implements
         holder = surfaceView.getHolder();
         holder.addCallback(MemoryCameraActivity.this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-//		if (isCamera) {//拍照识别
-//			take_pic.setVisibility(View.GONE);
-//		} else {
-//			take_pic.setVisibility(View.VISIBLE);
-//		}
         // 因为箭头方向的原因，横竖屏状态下 返回按钮是两张不同的ImageView
         // 横屏状态下返回按钮
 
@@ -325,25 +314,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
             }
 
         });
-        // 手动录入数据
-        take_pic.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                Intent intent = new Intent(MemoryCameraActivity.this,
-                        MemoryResultActivity.class);
-                intent.putExtra("number", number);
-                intent.putExtra("color", color);
-//                intent.putExtra("path", path);
-                // intent.putExtra("time", fieldvalue[11]);
-                intent.putExtra("recogType", false);
-                intent.putExtra("isatuo",false);//是否自动，true自动
-                startActivity(intent);
-                MemoryCameraActivity.this.finish();
-//				isCamera = true;
-            }
-
-        });
     }
 
     // 设置竖屏方向按钮布局
@@ -384,16 +355,16 @@ public class MemoryCameraActivity extends AppCompatActivity implements
         layoutParams.rightMargin = (int) (width * 0.10486111111111111111111111111111);
         flash_btn.setLayoutParams(layoutParams);
 
-//        take_h = (int) (height * 0.105859375);
-//        take_w = (int) (take_h * 1);
-        layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL,
-                RelativeLayout.TRUE);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,
-                RelativeLayout.TRUE);
-        layoutParams.bottomMargin = (int) (height * 0.10486111111111111111111111111111);
-
-        take_pic.setLayoutParams(layoutParams);
+////        take_h = (int) (height * 0.105859375);
+////        take_w = (int) (take_h * 1);
+//        layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL,
+//                RelativeLayout.TRUE);
+//        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,
+//                RelativeLayout.TRUE);
+//        layoutParams.bottomMargin = (int) (height * 0.10486111111111111111111111111111);
+//
+//        take_pic.setLayoutParams(layoutParams);
     }
 
     // 设置横屏屏方向按钮布局
@@ -435,16 +406,16 @@ public class MemoryCameraActivity extends AppCompatActivity implements
         layoutParams.topMargin = (int) (height * 0.10486111111111111111111111111111);
         flash_btn.setLayoutParams(layoutParams);
 
-        take_h = (int) (width * 0.105859375);
-        take_w = (int) (take_h * 1);
-        layoutParams = new LayoutParams(take_w, take_h);
-        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL,
-                RelativeLayout.TRUE);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,
-                RelativeLayout.TRUE);
-
-        layoutParams.rightMargin = (int) (width * 0.10486111111111111111111111111111);
-        take_pic.setLayoutParams(layoutParams);
+//        take_h = (int) (width * 0.105859375);
+//        take_w = (int) (take_h * 1);
+//        layoutParams = new LayoutParams(take_w, take_h);
+//        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL,
+//                RelativeLayout.TRUE);
+//        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,
+//                RelativeLayout.TRUE);
+//
+//        layoutParams.rightMargin = (int) (width * 0.10486111111111111111111111111111);
+//        take_pic.setLayoutParams(layoutParams);
     }
 
     @Override
@@ -828,32 +799,11 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                                 mVibrator.vibrate(100);
                                 closeCamera();
                                 ///////高精度，识别走着
-                                Intent intent = new Intent(
-                                        MemoryCameraActivity.this,
-                                        MemoryResultActivity.class);
+                                Intent intent = new Intent();
                                 number = fieldvalue[0];
-                                color = fieldvalue[1];
-
-                                int left = Integer.valueOf(fieldvalue[7]);
-                                int top = Integer.valueOf(fieldvalue[8]);
-                                int w = Integer.valueOf(fieldvalue[9])
-                                        - Integer.valueOf(fieldvalue[7]);
-                                int h = Integer.valueOf(fieldvalue[10])
-                                        - Integer.valueOf(fieldvalue[8]);
                                 intent.putExtra("number", number);
-                                intent.putExtra("color", color);
-//                                intent.putExtra("path", path);
-                                intent.putExtra("left", left);
-                                intent.putExtra("top", top);
-                                intent.putExtra("width", w);
-                                intent.putExtra("height", h);
-                                intent.putExtra("time", fieldvalue[11]);
-                                intent.putExtra("recogType", recogType);//true
-                                intent.putExtra("isatuo",true);//是否自动，true自动
-                                new FrameCapture(intentNV21data, preWidth,
-                                        preHeight, "10");
-                                startActivity(intent);
-                                MemoryCameraActivity.this.finish();
+                                setResult(RESULT_OK, intent);
+                                this.finish();
 
 //								}
 
@@ -865,9 +815,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                                                 Service.VIBRATOR_SERVICE);
                                 mVibrator.vibrate(100);
                                 closeCamera();
-                                Intent intent = new Intent(
-                                        MemoryCameraActivity.this,
-                                        MemoryResultActivity.class);
+                                Intent intent = new Intent();
                                 for (int i = 0; i < lenght; i++) {
 
                                     itemString = fieldvalue[0];
@@ -886,12 +834,8 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                                 }
 
                                 intent.putExtra("number", number);
-                                intent.putExtra("color", color);
-                                intent.putExtra("time", resultString);
-                                intent.putExtra("recogType", recogType);
-                                intent.putExtra("isatuo",true);//是否自动，true自动
-                                MemoryCameraActivity.this.finish();
-                                startActivity(intent);
+                                setResult(RESULT_OK, intent);
+                                this.finish();
 
 
                             }
@@ -950,34 +894,15 @@ public class MemoryCameraActivity extends AppCompatActivity implements
                                 .getSystemService(Service.VIBRATOR_SERVICE);
                         mVibrator.vibrate(100);
                         closeCamera();
-                        Intent intent = new Intent(
-                                MemoryCameraActivity.this,
-                                MemoryResultActivity.class);
+                        Intent intent = new Intent();
                         number = fieldvalue[0];
-                        color = fieldvalue[1];
+//                        color = fieldvalue[1];
                         if (fieldvalue[0] == null) {
                             number = "null";
                         }
-                        if (fieldvalue[1] == null) {
-                            color = "null";
-                        }
-                        int left = prp.plateIDCfg.left;
-                        int top = prp.plateIDCfg.top;
-                        int w = prp.plateIDCfg.right - prp.plateIDCfg.left;
-                        int h = prp.plateIDCfg.bottom - prp.plateIDCfg.top;
-
                         intent.putExtra("number", number);
-                        intent.putExtra("color", color);
-//                        intent.putExtra("path", path);
-                        intent.putExtra("left", left);
-                        intent.putExtra("top", top);
-                        intent.putExtra("width", w);
-                        intent.putExtra("height", h);
-                        intent.putExtra("time", fieldvalue[11]);
-                        intent.putExtra("recogType", recogType);
-                        intent.putExtra("isatuo",true);//是否自动，true自动
-                        MemoryCameraActivity.this.finish();
-                        startActivity(intent);
+                        setResult(RESULT_OK, intent);
+                        this.finish();
 
 //						}
                     }
@@ -1264,7 +1189,7 @@ public class MemoryCameraActivity extends AppCompatActivity implements
         super.onBackPressed();
         closeCamera();
         Intent intent = new Intent(MemoryCameraActivity.this,
-                MainActivity.class);
+                MemoryResultActivity.class);
         startActivity(intent);
         finish();
 

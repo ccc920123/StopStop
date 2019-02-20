@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.cdjysd.stopstop.baseconoom.Comm;
 import com.cdjysd.stopstop.bean.SetBean;
+import com.cdjysd.stopstop.utils.SharedPreferencesHelper;
 import com.cdjysd.stopstop.widget.RotateTextView;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;

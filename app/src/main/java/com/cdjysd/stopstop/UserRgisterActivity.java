@@ -227,7 +227,7 @@ public class UserRgisterActivity extends BaseActivity implements UserRgisterView
                         } else {
                             Log.i("bmob", "验证失败：code =" + ex.getErrorCode() + ",msg = " + ex.getLocalizedMessage());
                             ToastUtils.showToast(UserRgisterActivity.this, "请输入正确的验证码");
-                            uploadingData();
+//                            uploadingData();
                         }
                     }
                 });
@@ -235,6 +235,7 @@ public class UserRgisterActivity extends BaseActivity implements UserRgisterView
 
             } else if (v == registAgreement) {
                 openActivity(AgreementActivity.class);
+                finish();
             }
 
         }
@@ -386,6 +387,7 @@ public class UserRgisterActivity extends BaseActivity implements UserRgisterView
     public void registUserRgister(String phoneNo) {
         SharedPreferencesHelper.putString(UserRgisterActivity.this,"PHONE",phoneNo);
         openActivity(MainActivity.class);
+        finish();
     }
 
 

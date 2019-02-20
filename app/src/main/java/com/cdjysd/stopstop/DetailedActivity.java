@@ -22,9 +22,13 @@ import com.cdjysd.stopstop.baseconoom.Comm;
 import com.cdjysd.stopstop.bean.InserCarBean;
 import com.cdjysd.stopstop.bean.SetBean;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
+import com.cdjysd.stopstop.mvp.presenter.DetailePresenter;
+import com.cdjysd.stopstop.mvp.view.DetailedView;
 import com.cdjysd.stopstop.utils.Date_U;
 import com.cdjysd.stopstop.utils.ImageUtility;
+import com.cdjysd.stopstop.utils.NetUtils;
 import com.cdjysd.stopstop.utils.RxSchedulers;
+import com.cdjysd.stopstop.utils.SharedPreferencesHelper;
 import com.cdjysd.stopstop.utils.ToastUtils;
 import com.cdjysd.stopstop.widget.dialog.AlertDialog;
 import com.zhy.m.permission.MPermissions;
@@ -43,7 +47,7 @@ import rx.functions.Action1;
 
 import static com.cdjysd.stopstop.R.id.title_tv;
 
-public class DetailedActivity extends BaseActivity {
+public class DetailedActivity extends BaseActivity implements DetailedView {
 
 
     ImageView titleBack;
@@ -115,28 +119,34 @@ public class DetailedActivity extends BaseActivity {
                 break;
 
             case "1":
-                moneyText.setText(getMoneyday(timeall));
+                moneyText.setText(String.valueOf(set.getMoney()) + "元");
+
                 break;
 
             case "2":
-                moneyText.setText(String.valueOf(set.getMoney()) + "元");
+                moneyText.setText(getMoneyday(timeall));
                 break;
 
         }
         Intent sentIntent = new Intent(SENT_SMS_ACTION);
         sentPI = PendingIntent.getBroadcast(this, 0, sentIntent,
                 0);
+        //处理短信发送消息后的信息
         this.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context _context, Intent _intent) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-
-                        DataSupport.deleteAll(InserCarBean.class, "hphm = ? and hpys = ?", carBean.getHphm(), carBean.getHpys());
-                        DetailedActivity.this.dissLoadDialog();
-                        Intent intent = new Intent(DetailedActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NetUtils.isConnected(DetailedActivity.this)) //有网络判断服务器上的数据
+                        {
+                            ((DetailePresenter) mPresenter).delectData(SharedPreferencesHelper.getString(DetailedActivity.this, "PHONE", ""), carBean.getHphm());
+                        } else {
+                            DataSupport.deleteAll(InserCarBean.class, "hphm = ?", carBean.getHphm());
+                            DetailedActivity.this.dissLoadDialog();
+                            Intent intent = new Intent(DetailedActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                         break;
 //                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
 //                        ToastUtils.showToast(DetailedActivity.this,"发送失败");
@@ -149,11 +159,17 @@ public class DetailedActivity extends BaseActivity {
 //                        break;
                     default:
                         ToastUtils.showToast(DetailedActivity.this, "发送失败");
-                        DataSupport.deleteAll(InserCarBean.class, "hphm = ? and hpys = ?", carBean.getHphm(), carBean.getHpys());
-                        DetailedActivity.this.dissLoadDialog();
-                        Intent intents = new Intent(DetailedActivity.this, MainActivity.class);
-                        startActivity(intents);
-                        finish();
+                        if (NetUtils.isConnected(DetailedActivity.this)) //有网络判断服务器上的数据
+                        {
+                            ((DetailePresenter) mPresenter).delectData(SharedPreferencesHelper.getString(DetailedActivity.this, "PHONE", ""), carBean.getHphm());
+                        } else {
+
+                            DataSupport.deleteAll(InserCarBean.class, "hphm = ?", carBean.getHphm());
+                            DetailedActivity.this.dissLoadDialog();
+                            Intent intents = new Intent(DetailedActivity.this, MainActivity.class);
+                            startActivity(intents);
+                            finish();
+                        }
                         break;
                 }
             }
@@ -196,7 +212,7 @@ public class DetailedActivity extends BaseActivity {
 
         long hour = (long) Math.ceil(time / 60 / 60 / 1000.0f);// 小时
 
-        long day = (long) Math.ceil(time / 24 / 60 / 60 / 1000.0f);// 天前
+        long day = (long) Math.ceil(time / 24 / 60 / 60 / 1000.0f);// 天
 
         if (day - 1 > 0) {
             sb.append(day + "天");
@@ -232,7 +248,7 @@ public class DetailedActivity extends BaseActivity {
 
     @Override
     public BasePresenter getPresenter() {
-        return null;
+        return new DetailePresenter();
     }
 
     private View.OnClickListener click = new View.OnClickListener() {
@@ -244,10 +260,15 @@ public class DetailedActivity extends BaseActivity {
                     break;
                 case R.id.delect_confirm:
                     if ("".equals(telphoneNumber.getText().toString().trim())) {
-                        DataSupport.deleteAll(InserCarBean.class, "hphm = ? and hpys = ?", carBean.getHphm(), carBean.getHpys());
-                        Intent intent = new Intent(DetailedActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (NetUtils.isConnected(DetailedActivity.this)) //有网络判断服务器上的数据
+                        {
+                            ((DetailePresenter) mPresenter).delectData(SharedPreferencesHelper.getString(DetailedActivity.this, "PHONE", ""), carBean.getHphm());
+                        } else {
+                            DataSupport.deleteAll(InserCarBean.class, "hphm = ?", carBean.getHphm());
+                            Intent intent = new Intent(DetailedActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     } else {
 
                         if (isMobileNO(telphoneNumber.getText().toString().trim())) {
@@ -331,10 +352,36 @@ public class DetailedActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         Intent intent = new Intent(DetailedActivity.this, VehicleOutboundListActivity.class);
         startActivity(intent);
         finish();
+
+
+    }
+
+    @Override
+    public void showLoadProgressDialog(String str) {
+        showLoading(str);
+    }
+
+    @Override
+    public void disDialog() {
+        dissLoadDialog();
+    }
+
+    @Override
+    public void showToast(String message) {
+        ToastUtils.showToast(this, message);
+    }
+
+    @Override
+    public void delectSucceed() {
+
+        DataSupport.deleteAll(InserCarBean.class, "hphm = ?", carBean.getHphm());
+        Intent intent = new Intent(DetailedActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+
 
 
     }

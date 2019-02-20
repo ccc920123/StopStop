@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 陈渝金
+ * 645503254@qq.com
+ * 四川星盾科技股份有限公司 Reserved.
+  -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/pwk_input_item_border_left" android:state_pressed="true"/>
+    <item android:drawable="@drawable/pwk_input_item_border_left" android:state_selected="true"/>
+    <item android:drawable="@android:color/transparent"/>
+</selector>

@@ -25,11 +25,5 @@
         android:layout_height="wrap_content"
         android:background="@drawable/camera_back" />
 
-    <Button
-        android:id="@+id/take_pic_btn"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/car_selector"
-        android:text="手动录入"
-        android:textColor="@color/white"/>
+
 </RelativeLayout>

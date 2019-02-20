@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2017. 陈渝金
+ * 645503254@qq.com
+ * 四川星盾科技股份有限公司All Rights Reserved.
+  -->
+
+<resources>
+    <!--键盘类型-->
+    <declare-styleable name="KeyboardView">
+        <attr name="pwkKeyboardType" format="enum">
+            <enum name="FULL" value="0"/>
+            <enum name="CIVIL" value="1"/>
+            <enum name="CIVIL_WJ" value="2"/>
+        </attr>
+    </declare-styleable>
+
+    <!--输入框字体大小-->
+    <declare-styleable name="InputView">
+        <attr name="pwkInputTextSize" format="dimension"/>
+    </declare-styleable>
+
+</resources>

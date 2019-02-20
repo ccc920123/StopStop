@@ -28,7 +28,7 @@ android {
     //以下是为了找到android.os.SystemProperties这个隐藏的类
     String SDK_DIR = System.getenv("ANDROID_SDK_HOME")
     //("TAG", "SDK_DIR = " + SDK_DIR );
-    if(SDK_DIR == null) {
+    if (SDK_DIR == null) {
         Properties props = new Properties()
         props.load(new FileInputStream(project.rootProject.file("local.properties")))
         SDK_DIR = props.get('sdk.dir');
@@ -55,10 +55,10 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.4.0'
-    implementation files('libs/android_auth.jar')
 //    implementation project(':okhttputils')
     //    implementation project(':statusbarlibrary')
     annotationProcessor 'com.zhy:mpermission-compiler:1.0.0'
@@ -80,4 +80,5 @@ dependencies {
 //    implementation files('libs/BmobSMS_V1.2.1_20161201.jar')
     implementation files('libs/BmobSDK_3.6.6_20180914.jar')
     implementation files('libs/okio-1.12.0.jar')
+    compile project(':keyboard')
 }

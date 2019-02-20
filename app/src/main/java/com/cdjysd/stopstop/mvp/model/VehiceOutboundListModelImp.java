@@ -21,4 +21,9 @@ public interface VehiceOutboundListModelImp extends BaseModel {
 
     public  void  getCollectionData(MVPCallBack<List<InserCarBean>> callBack);
 
+
+    void selectNetData(String phone,MVPCallBack<List<InserCarBean>> callBack);
+
+    void SelectNetLikeData(String hphm,String phone, MVPCallBack<List<InserCarBean>> callBack);
+
 }

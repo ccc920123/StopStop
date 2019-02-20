@@ -145,8 +145,23 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     public void loginsueed(String userPhone) {
-        SharedPreferencesHelper.putString(this,"PHONE",userPhone);
-        openActivity(MainActivity.class);
+        //判断登录成功后内存储存的手机号是否和登录的手机号一至
+        if(SharedPreferencesHelper.getString(this,"PHONE","").equals(userPhone))
+        {
+            SharedPreferencesHelper.putString(this,"PHONE",userPhone);
+            openActivity(MainActivity.class);
+        }else{
+
+            //跳转到云端界面更新云端数据
+
+            Bundle bundle=new Bundle();
+                    bundle.putString("PHONE",userPhone);
+            openActivity(ClundActivity.class,bundle);
+
+        }
+
+
+        finish();
 
     }
 }

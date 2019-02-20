@@ -1,28 +1,28 @@
 package com.cdjysd.stopstop;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.bean.InserCarBean;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
+import com.cdjysd.stopstop.mvp.presenter.MemoryResulPresenter;
+import com.cdjysd.stopstop.mvp.view.MemoryResultView;
 import com.cdjysd.stopstop.utils.Date_U;
-import com.cdjysd.stopstop.utils.FileUtil;
-import com.cdjysd.stopstop.utils.ImageUtility;
-import com.cdjysd.stopstop.utils.RxSchedulers;
+import com.cdjysd.stopstop.utils.NetUtils;
+import com.cdjysd.stopstop.utils.SharedPreferencesHelper;
 import com.cdjysd.stopstop.utils.ToastUtils;
 import com.cdjysd.stopstop.widget.dialog.AlertDialog;
-import com.cdjysd.stopstop.widget.dialog.SimpleListDialog;
-import com.cdjysd.stopstop.widget.dialog.SimpleListDialogAdapter;
+import com.parkingwang.vehiclekeyboard.AsyscHphm;
+import com.parkingwang.vehiclekeyboard.PopupKeyboard;
+import com.parkingwang.vehiclekeyboard.ScenClick;
+import com.parkingwang.vehiclekeyboard.view.InputView;
 
 import org.litepal.crud.DataSupport;
 
@@ -31,24 +31,19 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
-import static android.view.View.GONE;
-
-public class MemoryResultActivity extends BaseActivity {
-    private TextView  titleTv,imageNum;
-    private EditText number;
+public class MemoryResultActivity extends BaseActivity implements ScenClick,AsyscHphm,MemoryResultView {
+    private TextView titleTv, imageNum;
     private Button confirm;
-    private int width, height;
     private ImageView titleBack;
-    private boolean recogType;// 记录进入此界面时是拍照识别界面还是视频识别界面   	 true:视频识别 		false:拍照识别
+    private final  int HPHM_SCAN_REQUEST_CODE=200;
 
-    private boolean isatuo;
+//    private boolean isatuo;
 
     //    private static final String PATH = Environment
 //            .getExternalStorageDirectory().toString() + "/DCIM/Camera/";
-    private String[] carColorString;
-    ;
+    private PopupKeyboard mPopupKeyboard;
+    InputView carnuber;
 
     @Override
     protected int getLayoutId() {
@@ -57,67 +52,64 @@ public class MemoryResultActivity extends BaseActivity {
 
     @Override
     protected void initInjector() {
-
-        recogType = getIntent().getBooleanExtra("recogType", false);
-        isatuo = getIntent().getBooleanExtra("isatuo", false);
-        carColorString = this.getResources().getStringArray(R.array.carColor);
         findView();
         titleTv.setText("车辆信息");
-        System.out.println("识别时间：" + getIntent().getStringExtra("time"));
     }
 
     @Override
     protected void initEventAndData(Bundle savedInstanceState) {
-
+        // 创建弹出键盘
+        mPopupKeyboard = new PopupKeyboard(this);
+        // 弹出键盘内部包含一个KeyboardView，在此绑定输入两者关联。
+        mPopupKeyboard.attach(carnuber, this);
+        //直接设置新能源车牌
+//        mPopupKeyboard.getController().setLockCarKeyBoard(true);
     }
 
     /**
      * @return void    返回类型
      * @throws
      * @Title: findView
-     * @Description: TODO(这里用一句话描述这个方法的作用)
+     * @Description:
      */
     private void findView() {
-        // TODO Auto-generated method stub
 
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        width = metric.widthPixels; // 屏幕宽度（像素）
-        height = metric.heightPixels; // 屏幕高度（像素）
-        number = (EditText) findViewById(R.id.plate_number);
+//        DisplayMetrics metric = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(metric);
+
         confirm = (Button) findViewById(R.id.confirm);
         titleBack = (ImageView) findViewById(R.id.title_back);
         titleTv = (TextView) findViewById(R.id.title_tv);
         imageNum = (TextView) findViewById(R.id.imagenum);
-        if (isatuo) {
-            int left = getIntent().getIntExtra("left", -1);
-            int top = getIntent().getIntExtra("top", -1);
-            int w = getIntent().getIntExtra("width", -1);
-            int h = getIntent().getIntExtra("height", -1);
-
-            number.setText(getIntent().getCharSequenceExtra("number"));
-
-        }
+        carnuber = findViewById(R.id.carnuber);
         titleBack.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                // TODO Auto-generated method stub
-                Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                if (mPopupKeyboard.isShown()){
+                    mPopupKeyboard.dismiss(MemoryResultActivity.this);
+                } else {
+                    Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
         confirm.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                final String hphm = number.getText().toString();
+                final String hphm = carnuber.getNumber();
+
+                if("".equals(hphm)){
+                    ToastUtils.showToast(MemoryResultActivity.this, "无号牌？请定义一个号牌吧！");
+                    return;
+                }
                 //先查询数据库中是否存在该车，
                 Observable observable = Observable.create(new Observable.OnSubscribe<Integer>() {
                     @Override
                     public void call(Subscriber<? super Integer> subscriber) {
-                        List<InserCarBean> data = DataSupport.where("hphm=? and hpys=?", hphm, "").find(InserCarBean.class);
+                        List<InserCarBean> data = DataSupport.where("hphm=?", hphm).find(InserCarBean.class);
                         if (data != null && data.size() > 0) {
                             subscriber.onNext(data.size());
                         } else {
@@ -153,16 +145,23 @@ public class MemoryResultActivity extends BaseActivity {
 
                         } else {
 
-                            // 将数据插入到本地数据库。
+                            // 将数据插入到本地数据库。同时将车辆信息同步到网络上
                             final InserCarBean bean = new InserCarBean();
                             bean.setHphm(hphm);
                             bean.setHpys("");
                             bean.setInserttime(Date_U.getCurrentTime2());
 
                             if (bean.save()) {
-                                Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
+                                if (NetUtils.isConnected(MemoryResultActivity.this)) {//无网络直接不请求数据
+
+                                    ((MemoryResulPresenter) mPresenter).insertNet(bean, SharedPreferencesHelper.getString(MemoryResultActivity.this, "PHONE", ""));
+                                }else{
+                                    Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+
                             } else {
                                 ToastUtils.showToast(MemoryResultActivity.this, "保存失败，你的手机系统内存可能不足");
                             }
@@ -178,9 +177,72 @@ public class MemoryResultActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mPopupKeyboard.isShown()){
+            mPopupKeyboard.dismiss(MemoryResultActivity.this);
+            return;
+        }
+        Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     public BasePresenter getPresenter() {
-        return null;
+        return new MemoryResulPresenter();
+    }
+
+
+    @Override
+    public void scenClick(Context mContext) {
+
+        Intent intent = new Intent(MemoryResultActivity.this,
+                MemoryCameraActivity.class);
+
+        startActivityForResult(intent, HPHM_SCAN_REQUEST_CODE);
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == HPHM_SCAN_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            String hphm = data.getCharSequenceExtra("number").toString();
+            carnuber.updateNumber(hphm);    //号码返回结果
+            imageNum.setText(hphm);
+        }
+    }
+
+    @Override
+    public void gethphm() {
+
+        imageNum.setText(carnuber.getNumber());
+    }
+
+    @Override
+    public void showLoadProgressDialog(String str) {
+       showLoading(str);
+    }
+
+    @Override
+    public void disDialog() {
+        dissLoadDialog();
+
+    }
+
+    @Override
+    public void showToast(String message) {
+        ToastUtils.showToast(this, message);
+    }
+
+    @Override
+    public void inserNetSucced() {
+
+
+        Intent intent = new Intent(MemoryResultActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -1,5 +1,6 @@
 package com.cdjysd.stopstop;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,7 +22,12 @@ import com.cdjysd.stopstop.bean.InserCarBean;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
 import com.cdjysd.stopstop.mvp.presenter.VehiceOutboundListPresenter;
 import com.cdjysd.stopstop.mvp.view.VehiceOutboundListView;
+import com.cdjysd.stopstop.utils.SharedPreferencesHelper;
 import com.cdjysd.stopstop.utils.ToastUtils;
+import com.parkingwang.vehiclekeyboard.AsyscHphm;
+import com.parkingwang.vehiclekeyboard.PopupKeyboard;
+import com.parkingwang.vehiclekeyboard.ScenClick;
+import com.parkingwang.vehiclekeyboard.view.InputView;
 
 import java.util.List;
 
@@ -30,18 +36,19 @@ import java.util.List;
  * Error:Execution failed for task ':app:transformDexArchiveWithExternalLibsDexMergerForQihuDebug'.
  * > java.lang.RuntimeException: com.android.builder.dexing.DexArchiveMergerException: Unable to merge dex
  */
-public class VehicleOutboundListActivity extends BaseActivity implements VehiceOutboundListView, ItemListener<InserCarBean> {
+public class VehicleOutboundListActivity extends BaseActivity implements VehiceOutboundListView, ItemListener<InserCarBean>, ScenClick, AsyscHphm {
 
-
+    private final int HPHM_SCAN_REQUEST_CODE = 200;
     ImageView titleBack;
     TextView titleTv;
-    EditText numberEd;
+    InputView numberEd;
     Button listSearch;
     RecyclerView mRecyclerView;
     BaseRecyclerAdapter mAdapter;
     TextView showNotext;
     RelativeLayout noLayout;
     LinearLayout activityVehicleOutbound;
+    private PopupKeyboard mPopupKeyboard;
 
     @Override
     protected int getLayoutId() {
@@ -77,10 +84,14 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
 
     @Override
     protected void initEventAndData(Bundle savedInstanceState) {
-
+// 创建弹出键盘
+        mPopupKeyboard = new PopupKeyboard(this);
+        // 弹出键盘内部包含一个KeyboardView，在此绑定输入两者关联。
+        mPopupKeyboard.attach(numberEd, this);
         //查询数据库只查询前5条数据
 
-        ((VehiceOutboundListPresenter) mPresenter).selectDBCollection();
+        ((VehiceOutboundListPresenter) mPresenter).selectDBCollection(this, SharedPreferencesHelper.getString(this, "PHONE", ""));
+//        ((VehiceOutboundListPresenter) mPresenter).selectNetData(SharedPreferencesHelper.getString(this, "PHONE", ""));
     }
 
     @Override
@@ -89,27 +100,30 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
     }
 
 
-   private View.OnClickListener click=new View.OnClickListener() {
-       @Override
-       public void onClick(View view) {
-           switch (view.getId()) {
-               case R.id.title_back:
-                   Intent intent = new Intent(VehicleOutboundListActivity.this, MainActivity.class);
-                   startActivity(intent);
-                   finish();
+    private View.OnClickListener click = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.title_back:
+                    Intent intent = new Intent(VehicleOutboundListActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
 
-                   break;
-               case R.id.list_search:
-                   //查找数据库的车辆
-                   if ("".equals(numberEd.getText().toString())) {
-                       ToastUtils.showToast(VehicleOutboundListActivity.this, "请输入查询条件");
-                   } else {
-                       ((VehiceOutboundListPresenter) mPresenter).selectDBDate(numberEd.getText().toString());
-                   }
-                   break;
-           }
-       }
-   };
+                    break;
+                case R.id.list_search:
+                    //查找数据库的车辆
+                    if ("".equals(numberEd.getNumber())) {
+                        ToastUtils.showToast(VehicleOutboundListActivity.this, "请输入查询条件");
+                    } else {
+                        ((VehiceOutboundListPresenter) mPresenter).selectDBDate(VehicleOutboundListActivity.this, numberEd.getNumber(), SharedPreferencesHelper.getString(VehicleOutboundListActivity.this, "PHONE", ""));
+
+//                        ((VehiceOutboundListPresenter) mPresenter).selectNetData(SharedPreferencesHelper.getString(VehicleOutboundListActivity.this, "PHONE", ""), numberEd.getText().toString());//通过数据再次查找数据
+
+                    }
+                    break;
+            }
+        }
+    };
 
 
     @Override
@@ -130,11 +144,19 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(VehicleOutboundListActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
     public void showNOData(boolean isShow, String string) {
 
         if (isShow) {
             noLayout.setVisibility(View.VISIBLE);
             showNotext.setText(string);
+
         } else {
             noLayout.setVisibility(View.GONE);
         }
@@ -168,6 +190,30 @@ public class VehicleOutboundListActivity extends BaseActivity implements VehiceO
         startActivity(intent);
         finish();
 
+
+    }
+
+    @Override
+    public void scenClick(Context mContext) {
+        Intent intent = new Intent(this,
+                MemoryCameraActivity.class);
+
+        startActivityForResult(intent, HPHM_SCAN_REQUEST_CODE);
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == HPHM_SCAN_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            String hphm = data.getCharSequenceExtra("number").toString();
+            numberEd.updateNumber(hphm);    //号码返回结果
+        }
+    }
+
+    @Override
+    public void gethphm() {
 
     }
 }

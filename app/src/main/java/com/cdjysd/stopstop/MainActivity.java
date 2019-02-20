@@ -25,10 +25,12 @@ import android.widget.Toast;
 import com.cdjysd.stopstop.base.BaseActivity;
 import com.cdjysd.stopstop.baseconoom.Comm;
 import com.cdjysd.stopstop.bean.InserCarBean;
+import com.cdjysd.stopstop.bean.SetBean;
 import com.cdjysd.stopstop.mvp.presenter.BasePresenter;
 import com.cdjysd.stopstop.utils.AppUtils;
 import com.cdjysd.stopstop.utils.ContextUtils;
 import com.cdjysd.stopstop.utils.ScreenUtils;
+import com.cdjysd.stopstop.utils.ToastUtils;
 import com.cdjysd.stopstop.widget.dialog.AlertDialog;
 import com.zhy.m.permission.MPermissions;
 import com.zhy.m.permission.PermissionDenied;
@@ -150,7 +152,7 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            System.exit(0);
         }
     }
 
@@ -218,17 +220,37 @@ public class MainActivity extends BaseActivity
        public void onClick(View view) {
            switch (view.getId()) {
                case R.id.car_insert_textview://车辆入库
-                   MPermissions.requestPermissions(MainActivity.this, Comm.PREMISSIONS_CAMERA, Manifest.permission.CAMERA, Manifest.permission
-                           .WRITE_EXTERNAL_STORAGE);
+                   SetBean bean = new SetBean(MainActivity.this);
+                   if ("".equals(bean.getAdesstr())) {
+                       ToastUtils.showToast(MainActivity.this, "你未设置收费信息，请先设置...");
+                       Intent intent = new Intent(MainActivity.this, SetingActivity.class);
+                       startActivity(intent);
+                       finish();
+                   } else {
+
+
+                       MPermissions.requestPermissions(MainActivity.this, Comm.PREMISSIONS_CAMERA, Manifest.permission.CAMERA, Manifest.permission
+                               .WRITE_EXTERNAL_STORAGE);
+                   }
+
+
+
+
+
 
                    break;
                case R.id.car_delect_textview://车辆出库
-
-
-                   Intent intent = new Intent(MainActivity.this, VehicleOutboundListActivity.class);
-                   startActivity(intent);
-                   finish();
-
+                   SetBean beans = new SetBean(MainActivity.this);
+                   if ("".equals(beans.getAdesstr())) {
+                       ToastUtils.showToast(MainActivity.this, "你未设置收费信息，请先设置...");
+                       Intent intent = new Intent(MainActivity.this, SetingActivity.class);
+                       startActivity(intent);
+                       finish();
+                   } else {
+                       Intent intent = new Intent(MainActivity.this, VehicleOutboundListActivity.class);
+                       startActivity(intent);
+                       finish();
+                   }
                    break;
            }
        }
@@ -237,7 +259,7 @@ public class MainActivity extends BaseActivity
 
     @PermissionGrant(Comm.PREMISSIONS_CAMERA)
     public void requestCameraSucceed() {
-        Intent intent = new Intent(MainActivity.this, MemoryCameraActivity.class);
+        Intent intent = new Intent(MainActivity.this, MemoryResultActivity.class);
         startActivity(intent);
         finish();
 
